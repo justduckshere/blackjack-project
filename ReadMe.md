@@ -1,6 +1,13 @@
-To build and run:
-cmake -S . -B build
+Please note I have been using a MAC machine for the below commands.
 
-cmake --build build
+To build and run (from root):
+chmod +x run.sh
+./run.sh
 
-cd build && ctest
+
+To run the rests(from root):
+chmod +x test.sh
+./test.sh
+
+
+I have temporarily placed the blackjack-project executable in the root directory so that it is easier to find, but normally it is redirected to the /build folder.
