@@ -12,6 +12,7 @@ using namespace std;
 class PlayGameWrapper {
 public:
     virtual int getUserIntResponse() = 0;
+    virtual vector<Card> callGetDeck(Deck inputDeck) = 0;
     virtual int callGetCardTrueValue(Card card) = 0;
     virtual vector<Card> callGetHand(Player* player) =0;
     virtual void callRemovePlayedCard(Deck deck) = 0;
@@ -97,6 +98,7 @@ public:
     
     ///// implementations for wrappers
     int getUserIntResponse() override;
+    vector<Card> callGetDeck(Deck inputDeck) override;
     int callGetCardTrueValue(Card card) override;
     vector<Card> callGetHand(Player* player) override;
     void callRemovePlayedCard(Deck deck) override;
