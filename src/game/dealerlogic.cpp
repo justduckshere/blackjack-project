@@ -6,8 +6,7 @@ void PlayGame::playDealersRound(PlayGameWrapper* wrapper) {
     bool hasAce = wrapper->callCheckIfHandHasAce(wrapper->callGetHand(dealer));
     bool shouldDraw = wrapper->callDetermineIfDealerShouldDraw(wrapper, hasAce);
     if (shouldDraw == true) {
-        Card cardHearts("hearts", "seven");
-        wrapper->callAddCardToHand(dealer, cardHearts);
+        wrapper->callAddCardToHand(dealer, wrapper->callGetDeck(currentDeck).back());
         wrapper->callRemovePlayedCard(currentDeck);
     }
 }
