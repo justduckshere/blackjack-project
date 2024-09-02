@@ -9,7 +9,7 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsOnlyWinner) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsOnlyWinner) {
     MockGame mock;
 
     stringstream buffer;
@@ -42,7 +42,7 @@ TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsOn
     EXPECT_EQ("The dealer value is true", text);
 }
 
-TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsWinnerGivenOnePlayerWithLesserScore) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsWinnerGivenOnePlayerWithLesserScore) {
     MockGame mock;
 
     stringstream buffer;
@@ -75,7 +75,7 @@ TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsWi
     EXPECT_EQ("The dealer value is 1 and the playersWhoHaveWon size is 0", text);
 }
 
-TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAsWinnerGivenPlayerHasHigherScore) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAsWinnerGivenPlayerHasHigherScore) {
     MockGame mock;
 
     stringstream buffer;
@@ -108,7 +108,7 @@ TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneA
     EXPECT_EQ("The dealer value is 0 and the playersWhoHaveWon size is 1", text);
 }
 
-TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoAsWinnersGivenPlayersHaveHighestScores) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoAsWinnersGivenPlayersHaveHighestScores) {
     MockGame mock;
 
     stringstream buffer;
@@ -141,7 +141,7 @@ TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneA
     EXPECT_EQ("The dealer value is 0 and the playersWhoHaveWon size is 2", text);
 }
 
-TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoandDealerAsWinnersGivenPlayersHaveHighestScores) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoandDealerAsWinnersGivenPlayersHaveHighestScores) {
     MockGame mock;
 
     stringstream buffer;
@@ -176,7 +176,7 @@ TEST(PlayGame_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneA
 
 
 
-TEST(PlayGame_DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
+TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -187,7 +187,7 @@ TEST(PlayGame_DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAnd
     EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nAnd Dealer has also achieved 21\n\n", text);
 }
 
-TEST(PlayGame_DisplayWin, PrintPlayerListOfWonPlayersGivenMultipleWinnersAndDealerNotTying) {
+TEST(WinnerHandler_DisplayWin, PrintPlayerListOfWonPlayersGivenMultipleWinnersAndDealerNotTying) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -198,7 +198,7 @@ TEST(PlayGame_DisplayWin, PrintPlayerListOfWonPlayersGivenMultipleWinnersAndDeal
     EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nPlayer 2 has won with a score of: 21\n\n", text);
 }   
 
-TEST(PlayGame_DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
+TEST(WinnerHandler_DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -209,7 +209,7 @@ TEST(PlayGame_DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
     EXPECT_EQ("Dealer has won with a score of 0\n", text);
 }
 
-TEST(PlayGame_DisplayWin, PrintPlayerOneHasWonOutput) {
+TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonOutput) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -221,7 +221,7 @@ TEST(PlayGame_DisplayWin, PrintPlayerOneHasWonOutput) {
 }   
 
 
-TEST(PlayGame_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrentTotalToTheHighestValueGivenNoAce) {
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrentTotalToTheHighestValueGivenNoAce) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -239,7 +239,7 @@ TEST(PlayGame_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrentTotal
     EXPECT_EQ(player->getCurrentTotal(), 20);
 }
 
-TEST(PlayGame_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValuesWhenAce11CountIsMoreThan21) {
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValuesWhenAce11CountIsMoreThan21) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -258,7 +258,7 @@ TEST(PlayGame_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValuesWhen
     EXPECT_EQ(player->getCurrentTotal(), 1);
 }
 
-TEST(PlayGame_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoValuesWhenAce11CountIsLessThan21) {
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoValuesWhenAce11CountIsLessThan21) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -278,7 +278,7 @@ TEST(PlayGame_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoValuesWh
 }
 
 
-TEST(PlayGame_GetListOfPlayersWithHighestScoresShould, ReturnVectorOfSizeOneWhenOnlyOnePlayerHasTheHighestScore) {
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnVectorOfSizeOneWhenOnlyOnePlayerHasTheHighestScore) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -297,7 +297,7 @@ TEST(PlayGame_GetListOfPlayersWithHighestScoresShould, ReturnVectorOfSizeOneWhen
     EXPECT_EQ(actual.second.size(), 1);
 }
 
-TEST(PlayGame_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePlayerHasTheHighestScore) {
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePlayerHasTheHighestScore) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -316,7 +316,7 @@ TEST(PlayGame_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhen
     EXPECT_EQ(actual.first, 2);
 }
 
-TEST(PlayGame_GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighest) {
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighest) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
