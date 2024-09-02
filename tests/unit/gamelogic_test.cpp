@@ -278,7 +278,7 @@ TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnPopulatedArrayOfSizeTwoIfTwo
     EXPECT_EQ(actual.size(), 2);    
 }
 
-TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnArrayWithOneIfSecondPlayerHasWon){
+TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnArrayWithValueOfOneIfSecondPlayerHasWon){
     MockGame mock;
 
     PlayGame playGame;
