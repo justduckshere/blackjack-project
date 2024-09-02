@@ -4,6 +4,10 @@ int PlayGame::callGetCardTrueValue(Card card){
     return card.getCardTrueValue();
 }
 
+vector<Card> PlayGame::callGetDeck(Deck inputDeck) {
+    return inputDeck.getDeck();
+}
+
 vector<Card> PlayGame::callGetHand(Player* player){
     return player->getHand();
 }
