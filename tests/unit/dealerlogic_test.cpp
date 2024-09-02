@@ -90,6 +90,7 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAc
     Card cardHearts("hearts", "two");
     Card cardSpades("spades", "ace");
     vector<Card> hand = {cardHearts, cardSpades};
+    vector<Card> deck = {cardHearts, cardSpades};
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
@@ -110,6 +111,10 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAc
         hand.push_back(cardDiamond);
     });
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(deck));
+
     playGame.playDealersRound(&mock);
 
     EXPECT_EQ(hand.size(),3);
@@ -121,6 +126,7 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17Withou
     Card cardHearts("hearts", "two");
     Card cardSpades("spades", "two");
     vector<Card> hand = {cardHearts, cardSpades};
+    vector<Card> deck = {cardHearts, cardSpades};
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
@@ -140,6 +146,10 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17Withou
         Card cardDiamond("diamonds", "two");
         hand.push_back(cardDiamond);
     });
+
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(deck));
 
     playGame.playDealersRound(&mock);
 
