@@ -14,7 +14,7 @@ void PlayGame::playDealersRound(PlayGameWrapper* wrapper) {
 bool PlayGame::determineIfDealerShouldDraw(PlayGameWrapper* wrapper, bool hasAce){
     int dealersHandTotal = 0;
     if (hasAce == true) {
-        dealersHandTotal = wrapper->callGetTotalHand(wrapper, wrapper->callGetHand(dealer), 11);
+        dealersHandTotal = wrapper->callGetTotalHand(wrapper, wrapper->callGetHand(dealer), 11); 
     }else {
         dealersHandTotal = wrapper->callGetTotalHand(wrapper, wrapper->callGetHand(dealer));
     }
