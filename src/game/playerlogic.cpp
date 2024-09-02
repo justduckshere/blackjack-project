@@ -9,7 +9,7 @@ void PlayGame::playPlayersRound(PlayGameWrapper* wrapper) {
     for (int i =0; i < getPlayerList().size(); i++) {
         if (wrapper->callGetPlayerHasGoneBust(getPlayerList()[i])  == false) {
             int playerResponse;
-            cout << "Would Player " << i + 1 << " like another card (1 = yes, 0 = no)" << endl;
+            cout << "Would Player " << i + 1 << " like another card (1 = yes)" << endl;
             playerResponse = wrapper->getUserIntResponse();
             if (playerResponse == 1) {
                 wrapper->callDealToPlayer(wrapper, i);
@@ -21,7 +21,7 @@ void PlayGame::playPlayersRound(PlayGameWrapper* wrapper) {
                 }
             }else {
                 cout << "\tPlayer " << i+1 << " has ";
-                getPlayerList()[i]->displayHand();
+                wrapper->callDisplayHand(getPlayerList()[i]);
             }
         }
     }
