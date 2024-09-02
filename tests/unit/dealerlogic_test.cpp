@@ -9,7 +9,7 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
+TEST(DealerLogic_PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
     MockGame mock;
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
@@ -30,7 +30,7 @@ TEST(PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
     EXPECT_EQ("Dealers card is: ten of hearts\n\n", text);
 }
 
-TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
+TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     MockGame mock;
     PlayGame playGame;
     Player* dealer = new Player();
@@ -61,7 +61,7 @@ TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     EXPECT_EQ(hand.size(), 2);
 }
 
-TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
+TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
     MockGame mock;
 
     PlayGame playGame;
@@ -93,7 +93,7 @@ TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
     EXPECT_EQ(playGame.getDealer()->getHand().size(), 2);
 }
 
-TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
+TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
     MockGame mock;
     PlayGame playGame;
     Player* dealer = new Player();
@@ -132,7 +132,7 @@ TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
     EXPECT_EQ(hand.size(),3);
 }
 
-TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
+TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
     MockGame mock;
 
     PlayGame playGame;
@@ -171,7 +171,7 @@ TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
     EXPECT_EQ(hand.size(),3);
 }
 
-TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16Total) {
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16Total) {
     MockGame mock;
 
     PlayGame playGame;
@@ -189,7 +189,7 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16Total) {
     EXPECT_EQ(playGame.determineIfDealerShouldDraw(&mock, false), true);
 }
 
-TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithNoAce) {
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithNoAce) {
     MockGame mock;
 
     PlayGame playGame;
@@ -208,7 +208,7 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalW
 }
 
 
-TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithAnAce) {
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithAnAce) {
     MockGame mock;
 
     PlayGame playGame;
@@ -226,7 +226,7 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalW
     EXPECT_EQ(playGame.determineIfDealerShouldDraw(&mock, true), false);
 }
 
-TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16InTotalWithAnAce) {
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16InTotalWithAnAce) {
     MockGame mock;
 
     PlayGame playGame;
@@ -245,7 +245,7 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16InTotalWi
 }
 
 
-TEST(SetDealerShould, SetTheDealerAccordingToInput) {
+TEST(DealerLogic_SetDealerShould, SetTheDealerAccordingToInput) {
     PlayGame playGame;
     Player* dealer = new Player();
     Card cardHearts("hearts", "ten");
