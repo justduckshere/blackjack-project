@@ -43,7 +43,7 @@ TEST(GameLogic_VerifyHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
     EXPECT_EQ(actual, false);  
 }
 
-TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenAndEqualTo21) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWithOneAceAsElevenAndEqualTo21) {
     MockGame mock;
     PlayGame playGame;
 
@@ -65,7 +65,7 @@ TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenA
     EXPECT_EQ(actual, true);    
 }
 
-TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsOneAndEqualTo21) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWithOneAceAsOneAndEqualTo21) {
     MockGame mock;
     PlayGame playGame;
 
@@ -84,7 +84,7 @@ TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsOneAndE
     EXPECT_EQ(actual, true);    
 }
 
-TEST(GameLogic_VerifyHandHasWonShould, ReturnFalseWhenHandIs21WithAceAndNotEqualTo21) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnFalseWithAceAndNotEqualTo21) {
     MockGame mock;
     PlayGame playGame;
 
