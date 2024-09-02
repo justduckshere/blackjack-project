@@ -70,8 +70,8 @@ bool PlayGame::callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Car
     return checkIfHandHasWon(wrapper, hand, aceValue);
 }
 
-vector<int> PlayGame::callVerifyAnyPlayerHasAchieved21(PlayGameWrapper *wrapper) {
-    return verifyAnyPlayerHasAchieved21(wrapper);
+vector<int> PlayGame::callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) {
+    return returnListOfPlayersAt21(wrapper);
 }
 
 void PlayGame::callDetermineWinnerFromNobody21(PlayGameWrapper *wrapper) {

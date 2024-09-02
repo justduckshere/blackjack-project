@@ -33,7 +33,7 @@ public:
     virtual bool callVerifyHandHasWon(PlayGameWrapper* wrapper, vector<Card> hand) = 0;
     virtual bool callCheckIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand) =0 ;
     virtual bool callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) =0;
-    virtual vector<int> callVerifyAnyPlayerHasAchieved21(PlayGameWrapper *wrapper) = 0;
+    virtual vector<int> callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) = 0;
     virtual void callDetermineWinnerFromNobody21(PlayGameWrapper *wrapper) = 0;
     virtual void callPlayDealersRound(PlayGameWrapper* wrapper) = 0;
     virtual bool callCheckIfAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) = 0;
@@ -83,7 +83,7 @@ public:
     bool checkIfHandHasAce(vector<Card> hand);
     bool checkIfHandHasWon(PlayGameWrapper *playGameWrapper,vector<Card> hand);
     bool checkIfHandHasWon(PlayGameWrapper *playGameWrapper,vector<Card> hand, int aceValue);
-    vector<int> verifyAnyPlayerHasAchieved21(PlayGameWrapper *wrapper);
+    vector<int> returnListOfPlayersAt21(PlayGameWrapper *wrapper);
     bool checkIfAllPlayersHaveGoneBust(PlayGameWrapper *wrapper);
 
 
@@ -118,7 +118,7 @@ public:
     bool callVerifyHandHasWon(PlayGameWrapper* wrapper, vector<Card> hand) override;
     bool callCheckIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand) override;
     bool callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) override;
-    vector<int> callVerifyAnyPlayerHasAchieved21(PlayGameWrapper *wrapper) override;
+    vector<int> callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) override;
     void callDetermineWinnerFromNobody21(PlayGameWrapper *wrapper) override;
     void callPlayDealersRound(PlayGameWrapper* wrapper) override;
     bool callCheckIfAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) override;

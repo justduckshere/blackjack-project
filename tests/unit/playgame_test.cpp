@@ -48,7 +48,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfAPlayerHasAchieved21) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(2)
     .WillRepeatedly(Return(vectorPlayersAchieved21));
 
@@ -69,7 +69,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfAPlayerHasAchieved21) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(2)
     .WillRepeatedly(Return(vectorPlayersAchieved21));
 
@@ -97,7 +97,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfDealerGoesOver17) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -122,7 +122,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfADealerGoesOver17) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -154,7 +154,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -184,7 +184,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDealer) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -215,7 +215,7 @@ TEST(RegularGamePlayShould, ReturnFalseIfNoConditionsAreMet) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -244,7 +244,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfNoConditionsAreMet) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -298,7 +298,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenDealerHasWonIsTrue) {
 
     vector<int> noPlayersHaveWon = {};
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(noPlayersHaveWon));
     
@@ -330,7 +330,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenAPlayerHasWon) {
 
     vector<int> playersHaveWon = {1};
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(playersHaveWon));
     
@@ -361,7 +361,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenNobodyHasWonTheInitialRound) {
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
 
     vector<int> noPlayersHaveWon = {};
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(noPlayersHaveWon));
     
