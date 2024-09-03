@@ -176,16 +176,3 @@ TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessTha
 
     EXPECT_EQ(playGame.determineIfDealerShouldDraw(&mock, true), true);
 }
-
-
-TEST(DealerLogic_GetDealerShould, GetTheDealerAccordingToInput) {
-    PlayGame playGame;
-    Player* dealer = new Player();
-    Card cardHearts("hearts", "ten");
-    dealer->addCardToHand(cardHearts);
-
-    playGame.setDealer(dealer);
-
-    EXPECT_EQ(playGame.getDealer()->getHand()[0].getSuit(), "hearts");
-    EXPECT_EQ(playGame.getDealer()->getHand()[0].getValue(), "ten");
-}

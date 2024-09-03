@@ -2,39 +2,24 @@
 #include "game/playgame.h"
 #include <sstream>
 
-
-TEST(PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
+TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     PlayGame playGame;
-    Player* dealer = new Player();
-    Card cardHearts("hearts", "ten");
-    dealer->addCardToHand(cardHearts);
-    playGame.setDealer(dealer);
-
-
-    playGame.playDealersRound();
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-    EXPECT_EQ("Dealers second card is: ten of hearts\n\n", text);
-}
-
-TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
-    PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* dealer = new Player();
     Card cardHearts("hearts", "seven");
     dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
     dealer->addCardToHand(cardSpades);
-
     playGame.setDealer(dealer);
-    playGame.playDealersRound();
+    
+    playGame.playDealersRound(wrapper);
 
     EXPECT_EQ(playGame.getDealer()->getHand().size(), 2);
 }
 
-TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
+TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* dealer = new Player();
     Card cardHearts("hearts", "seven");
     dealer->addCardToHand(cardHearts);
@@ -42,44 +27,84 @@ TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
     dealer->addCardToHand(cardSpades);
 
     playGame.setDealer(dealer);
-    playGame.playDealersRound();
+    playGame.playDealersRound(wrapper);
 
     EXPECT_EQ(playGame.getDealer()->getHand().size(), 2);
 }
 
-TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
+TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
     PlayGame playGame;
     Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Deck deck;
+    deck.init();
     Card cardHearts("hearts", "two");
     dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
     dealer->addCardToHand(cardSpades);
 
     playGame.setDealer(dealer);
-    playGame.playDealersRound();
+    playGame.playDealersRound(wrapper);
 
     EXPECT_EQ(playGame.getDealer()->getHand().size(),3);
 }
 
-TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
+TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
     PlayGame playGame;
     Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Deck deck;
+    deck.init();
     Card cardHearts("hearts", "two");
     dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "two");
     dealer->addCardToHand(cardSpades);
 
     playGame.setDealer(dealer);
-    playGame.playDealersRound();
+    playGame.playDealersRound(wrapper);
 
     EXPECT_EQ(playGame.getDealer()->getHand().size(),3);
 }
 
-
-
-TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16Total) {
+TEST(DealerLogic_PlayDealersRoundShould, DecreaseTheDeckSizeBy1ForHandLessThan17) {
     PlayGame playGame;
     Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Deck deck;
+    deck.init();
+    Card cardHearts("hearts", "two");
+    dealer->addCardToHand(cardHearts);
+    Card cardSpades("spades", "two");
+    dealer->addCardToHand(cardSpades);
+
+    playGame.setDealer(dealer);
+    playGame.playDealersRound(wrapper);
+
+    EXPECT_EQ(deck.getDeck().size(),51);
+}
+
+TEST(DealerLogic_PlayDealersRoundShould, NotDecreaseTheDeckSizeByForHandGreaterThan17) {
+    PlayGame playGame;
+    Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Deck deck;
+    deck.init();
+    Card cardHearts("hearts", "ten");
+    dealer->addCardToHand(cardHearts);
+    Card cardSpades("spades", "ten");
+    dealer->addCardToHand(cardSpades);
+
+    playGame.setDealer(dealer);
+    playGame.playDealersRound(wrapper);
+
+    EXPECT_EQ(deck.getDeck().size(),52);
+}
+
+
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16TotalWithNoAce) {
+    PlayGame playGame;
+    Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "nine");
     dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "two");
@@ -87,12 +112,27 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16Total) {
 
     playGame.setDealer(dealer);
 
-    EXPECT_EQ(playGame.determineIfDealerShouldDraw(false), true);
+    EXPECT_EQ(playGame.determineIfDealerShouldDraw(wrapper, false), true);
 }
 
-TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithNoAce) {
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16InTotalWithAce) {
     PlayGame playGame;
     Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "two");
+    dealer->addCardToHand(cardHearts);
+    Card cardSpades("spades", "ace");
+    dealer->addCardToHand(cardSpades);
+
+    playGame.setDealer(dealer);
+
+    EXPECT_EQ(playGame.determineIfDealerShouldDraw(wrapper, true), true);
+}
+
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithNoAce) {
+    PlayGame playGame;
+    Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "nine");
     dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "nine");
@@ -100,13 +140,13 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalW
 
     playGame.setDealer(dealer);
 
-    EXPECT_EQ(playGame.determineIfDealerShouldDraw(false), false);
+    EXPECT_EQ(playGame.determineIfDealerShouldDraw(wrapper, false), false);
 }
 
-
-TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithAnAce) {
+TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithAce) {
     PlayGame playGame;
     Player* dealer = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "nine");
     dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
@@ -114,30 +154,12 @@ TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalW
 
     playGame.setDealer(dealer);
 
-    EXPECT_EQ(playGame.determineIfDealerShouldDraw(true), false);
-}
-
-TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16InTotalWithAnAce) {
-    PlayGame playGame;
-    Player* dealer = new Player();
-    Card cardHearts("hearts", "two");
-    dealer->addCardToHand(cardHearts);
-    Card cardSpades("spades", "ace");
-    dealer->addCardToHand(cardSpades);
-
-    playGame.setDealer(dealer);
-
-    EXPECT_EQ(playGame.determineIfDealerShouldDraw(true), true);
+    EXPECT_EQ(playGame.determineIfDealerShouldDraw(wrapper, true), false);
 }
 
 
-TEST(GetDealerShould, ReturnANotNilPointerOnInitialisation) {
-    PlayGame playGame;
-    Player* dealer = playGame.getDealer();
-    ASSERT_TRUE(dealer != nullptr);
-}
 
-TEST(SetDealerShould, SetTheDealerAccordingToInput) {
+TEST(DealerLogic_GetDealerShould, GetTheDealerAccordingToInput) {
     PlayGame playGame;
     Player* dealer = new Player();
     Card cardHearts("hearts", "ten");
