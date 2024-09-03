@@ -8,7 +8,7 @@ Player* PlayGame::dealer;
 void PlayGame::playGame(PlayGameWrapper *wrapper){
     wrapper->callInitialiseGame(wrapper);
     bool winner = false;
-    vector<int> playersWhoHaveWon = wrapper->callReturnListOfPlayersAt21(wrapper);
+    vector<int> playersWhoHaveWon = wrapper->callVerifyAnyPlayerHasAchieved21(wrapper);
     wrapper->callSetHighestValidHandValueForPlayer(wrapper, wrapper->callGetDealer()); 
     bool dealerHasWon = wrapper->callVerifyHandHasWon(wrapper, wrapper->callGetHand(wrapper->callGetDealer()));
     if (dealerHasWon == true || playersWhoHaveWon.size() != 0) {
@@ -43,9 +43,9 @@ bool PlayGame::regularGamePlay(PlayGameWrapper *wrapper){
     if (wrapper->callCheckIfHandHasGoneBust(wrapper, wrapper->callGetHand(getDealer()))) {
         cout << "Dealer has gone bust! Everyone else has won!!" << endl <<endl;
         return true;
-    } else if (wrapper->callReturnListOfPlayersAt21(wrapper).size() != 0) {
+    } else if (wrapper->callVerifyAnyPlayerHasAchieved21(wrapper).size() != 0) {
         bool dealerHasWon = wrapper->callVerifyHandHasWon(wrapper, wrapper->callGetHand(getDealer()));
-        vector<int> playersWhoHaveWon = wrapper->callReturnListOfPlayersAt21(wrapper);
+        vector<int> playersWhoHaveWon = wrapper->callVerifyAnyPlayerHasAchieved21(wrapper);
         wrapper->callDisplayWin(dealerHasWon, playersWhoHaveWon, 21);
         return  true;
     } else if (wrapper->callGetCurrentTotal(dealer) > 17) {

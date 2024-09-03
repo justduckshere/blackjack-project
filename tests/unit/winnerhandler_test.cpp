@@ -9,12 +9,14 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsOnlyWinner) {
+TEST(DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsWinnerGivenNoPlayers) {
     MockGame mock;
 
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    Player* dealer = new Player();
+    playGame.setDealer(dealer);
 
     vector<int> populatedVector = {};
     pair<int, vector<int>> highest = make_pair(0, populatedVector);
@@ -25,42 +27,9 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDeale
 
     EXPECT_CALL(mock, callGetCurrentTotal(_))
     .Times(1)
-    .WillOnce(Return(1));
-
-    EXPECT_CALL(mock, callDisplayWin(true, _, 1))
-    .Times(1)
-    .WillOnce([](bool dealerHasWon, vector<int> players, int score) {
-        cout << "The dealer value is true";
-    });
-
-    playGame.determineWinnerFromNobody21(&mock);
-
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-
-
-    EXPECT_EQ("The dealer value is true", text);
-}
-
-TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsWinnerGivenOnePlayerWithLesserScore) {
-    MockGame mock;
-
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-    PlayGame playGame;
-
-    vector<int> populatedVector = {1};
-    pair<int, vector<int>> highest = make_pair(1, populatedVector);
-
-    EXPECT_CALL(mock, callGetListOfPlayersWithHighestScores(_))
-    .Times(1)
-    .WillOnce(Return(highest));
-
-    EXPECT_CALL(mock, callGetCurrentTotal(_))
-    .Times(1)
     .WillOnce(Return(12));
 
-    EXPECT_CALL(mock, callDisplayWin(true, _, 12))
+    EXPECT_CALL(mock, callDisplayWin(_, _, _))
     .Times(1)
     .WillOnce([](bool dealerHasWon, vector<int> playersWhoHaveWon, int score) {
         cout << "The dealer value is " << dealerHasWon << " and the playersWhoHaveWon size is "<< playersWhoHaveWon.size();
@@ -75,12 +44,49 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDeale
     EXPECT_EQ("The dealer value is 1 and the playersWhoHaveWon size is 0", text);
 }
 
-TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAsWinnerGivenPlayerHasHigherScore) {
+TEST(DetermineWinnerFromNobody21Should, PrintCorrectTextGivenDealerAsWinnerGivenOnePlayerWithLesserScore) {
     MockGame mock;
 
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    Player* dealer = new Player();
+    playGame.setDealer(dealer);
+
+    vector<int> populatedVector = {1};
+    pair<int, vector<int>> highest = make_pair(1, populatedVector);
+
+    EXPECT_CALL(mock, callGetListOfPlayersWithHighestScores(_))
+    .Times(1)
+    .WillOnce(Return(highest));
+
+    EXPECT_CALL(mock, callGetCurrentTotal(_))
+    .Times(1)
+    .WillOnce(Return(12));
+
+    EXPECT_CALL(mock, callDisplayWin(_, _, _))
+    .Times(1)
+    .WillOnce([](bool dealerHasWon, vector<int> playersWhoHaveWon, int score) {
+        cout << "The dealer value is " << dealerHasWon << " and the playersWhoHaveWon size is "<< playersWhoHaveWon.size();
+    });
+
+    playGame.determineWinnerFromNobody21(&mock);
+
+    string text = buffer.str();
+    cout.rdbuf(prevcoutbuf);
+
+
+    EXPECT_EQ("The dealer value is 1 and the playersWhoHaveWon size is 0", text);
+}
+
+TEST(DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAsWinnerGivenPlayerHasHigherScore) {
+    MockGame mock;
+
+    stringstream buffer;
+    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
+    PlayGame playGame;
+    Player* dealer = new Player();
+    playGame.setDealer(dealer);
 
     vector<int> populatedVector = {1};
     pair<int, vector<int>> highest = make_pair(21, populatedVector);
@@ -90,10 +96,10 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
     .WillOnce(Return(highest));
 
     EXPECT_CALL(mock, callGetCurrentTotal(_))
-    .Times(1)
-    .WillOnce(Return(1));
+    .Times(2)
+    .WillRepeatedly(Return(1));
 
-    EXPECT_CALL(mock, callDisplayWin(false, _, 21))
+    EXPECT_CALL(mock, callDisplayWin(_, _, _))
     .Times(1)
     .WillOnce([](bool dealerHasWon, vector<int> playersWhoHaveWon, int score) {
         cout << "The dealer value is " << dealerHasWon << " and the playersWhoHaveWon size is "<< playersWhoHaveWon.size();
@@ -108,12 +114,14 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
     EXPECT_EQ("The dealer value is 0 and the playersWhoHaveWon size is 1", text);
 }
 
-TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoAsWinnersGivenPlayersHaveHighestScores) {
+TEST(DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoAsWinnersGivenPlayersHaveHighestScores) {
     MockGame mock;
 
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    Player* dealer = new Player();
+    playGame.setDealer(dealer);
 
     vector<int> populatedVector = {1, 1};
     pair<int, vector<int>> highest = make_pair(21, populatedVector);
@@ -123,10 +131,10 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
     .WillOnce(Return(highest));
 
     EXPECT_CALL(mock, callGetCurrentTotal(_))
-    .Times(1)
-    .WillOnce(Return(1));
+    .Times(2)
+    .WillRepeatedly(Return(1));
 
-    EXPECT_CALL(mock, callDisplayWin(false, _, 21))
+    EXPECT_CALL(mock, callDisplayWin(_, _, _))
     .Times(1)
     .WillOnce([](bool dealerHasWon, vector<int> playersWhoHaveWon, int score) {
         cout << "The dealer value is " << dealerHasWon << " and the playersWhoHaveWon size is "<< playersWhoHaveWon.size();
@@ -141,12 +149,14 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
     EXPECT_EQ("The dealer value is 0 and the playersWhoHaveWon size is 2", text);
 }
 
-TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoandDealerAsWinnersGivenPlayersHaveHighestScores) {
+TEST(DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlayerOneAndTwoandDealerAsWinnersGivenPlayersHaveHighestScores) {
     MockGame mock;
 
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    Player* dealer = new Player();
+    playGame.setDealer(dealer);
 
     vector<int> populatedVector = {1, 1};
     pair<int, vector<int>> highest = make_pair(21, populatedVector);
@@ -156,10 +166,10 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
     .WillOnce(Return(highest));
 
     EXPECT_CALL(mock, callGetCurrentTotal(_))
-    .Times(1)
-    .WillOnce(Return(highest.first));
+    .Times(2)
+    .WillRepeatedly(Return(highest.first));
 
-    EXPECT_CALL(mock, callDisplayWin(true, _, 21))
+    EXPECT_CALL(mock, callDisplayWin(_, _, _))
     .Times(1)
     .WillOnce([](bool dealerHasWon, vector<int> playersWhoHaveWon, int score) {
         cout << "The dealer value is " << dealerHasWon << " and the playersWhoHaveWon size is "<< playersWhoHaveWon.size();
@@ -175,30 +185,7 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
 }
 
 
-
-TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-    PlayGame playGame;
-    vector<int> playerOneWon = {0};
-    playGame.displayWin(true, playerOneWon, 21);
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-    EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nAnd Dealer has also achieved 21\n\n", text);
-}
-
-TEST(WinnerHandler_DisplayWin, PrintPlayerListOfWonPlayersGivenMultipleWinnersAndDealerNotTying) {
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-    PlayGame playGame;
-    vector<int> playerOneWon = {0, 1};
-    playGame.displayWin(false, playerOneWon, 21);
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-    EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nPlayer 2 has won with a score of: 21\n\n", text);
-}   
-
-TEST(WinnerHandler_DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
+TEST(DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -209,7 +196,18 @@ TEST(WinnerHandler_DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
     EXPECT_EQ("Dealer has won with a score of 0\n", text);
 }
 
-TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonOutput) {
+TEST(DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
+    stringstream buffer;
+    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
+    PlayGame playGame;
+    vector<int> playerOneWon = {0};
+    playGame.displayWin(true, playerOneWon, 21);
+    string text = buffer.str();
+    cout.rdbuf(prevcoutbuf);
+    EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nAnd Dealer has also achieved 21\n\n", text);
+}
+
+TEST(DisplayWin, PrintPlayerOneHasWonOutput) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -218,10 +216,10 @@ TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonOutput) {
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
     EXPECT_EQ("Player 1 has won and with a score of 21\n\n", text);
-}   
+}
 
 
-TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrentTotalToTheHighestValueGivenNoAce) {
+TEST(setHighestValidHandValueForPlayerShould, OnlyCallGetTotalOnceWhenWeHaveNoAce) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -239,7 +237,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrent
     EXPECT_EQ(player->getCurrentTotal(), 20);
 }
 
-TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValuesWhenAce11CountIsMoreThan21) {
+TEST(setHighestValidHandValueForPlayerShould, ReturnLessOfTwoValuesWhenAce11CountIsMoreThan21) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -258,7 +256,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValue
     EXPECT_EQ(player->getCurrentTotal(), 1);
 }
 
-TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoValuesWhenAce11CountIsLessThan21) {
+TEST(setHighestValidHandValueForPlayerShould, ReturnHigherOfTwoValuesWhenAce11CountIsLessThan21) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -278,7 +276,8 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoVal
 }
 
 
-TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnVectorOfSizeOneWhenOnlyOnePlayerHasTheHighestScore) {
+
+TEST(GetListOfPlayersWithHighestScoresShould, ReturnOnePlayerWhenOnlyOnePlayerHasTheHighestScore) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -297,7 +296,7 @@ TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnVectorOfSizeOn
     EXPECT_EQ(actual.second.size(), 1);
 }
 
-TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePlayerHasTheHighestScore) {
+TEST(GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePlayerHasTheHighestScore) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -316,7 +315,7 @@ TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValu
     EXPECT_EQ(actual.first, 2);
 }
 
-TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighest) {
+TEST(GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighest) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();

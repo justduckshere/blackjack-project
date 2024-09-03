@@ -9,32 +9,37 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(DealerLogic_PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
+TEST(PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
     MockGame mock;
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "ten");
-    Card cardClubs("clubs", "ten");
-    vector<Card> hand = {cardHearts, cardClubs};
+    dealer->addCardToHand(cardHearts);
+    vector<Card> hand = {cardHearts};
+    playGame.setDealer(dealer);
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
     .WillRepeatedly(Return(hand));
 
     playGame.playDealersRound(&mock);
-
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
     EXPECT_EQ("Dealers card is: ten of hearts\n\n", text);
 }
 
-TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
+TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     MockGame mock;
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "seven");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
+    dealer->addCardToHand(cardSpades);
     vector<Card> hand = {cardHearts, cardSpades};
+    playGame.setDealer(dealer);
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
@@ -56,13 +61,17 @@ TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17W
     EXPECT_EQ(hand.size(), 2);
 }
 
-TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
+TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
     MockGame mock;
 
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "seven");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "jack");
+    dealer->addCardToHand(cardSpades);    
     vector<Card> hand = {cardHearts, cardSpades};
+    playGame.setDealer(dealer);
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
@@ -81,16 +90,23 @@ TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17W
 
     playGame.playDealersRound(&mock);
 
-    EXPECT_EQ(hand.size(), 2);
+    EXPECT_EQ(playGame.getDealer()->getHand().size(), 2);
 }
 
-TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
+TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
     MockGame mock;
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "two");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
+    dealer->addCardToHand(cardSpades);
     vector<Card> hand = {cardHearts, cardSpades};
-    vector<Card> deck = {cardHearts, cardSpades};
+    playGame.setDealer(dealer);
+    Deck* deck = new Deck();
+    deck->init();
+    playGame.setCurrentDeck(*deck);
+
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
@@ -111,22 +127,25 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAc
         hand.push_back(cardDiamond);
     });
 
-    EXPECT_CALL(mock, callGetDeck(_))
-    .Times(1)
-    .WillOnce(Return(deck));
-
     playGame.playDealersRound(&mock);
 
     EXPECT_EQ(hand.size(),3);
 }
 
-TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
+TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
     MockGame mock;
+
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "two");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "two");
+    dealer->addCardToHand(cardSpades);
+    playGame.setDealer(dealer);
     vector<Card> hand = {cardHearts, cardSpades};
-    vector<Card> deck = {cardHearts, cardSpades};
+    Deck* deck = new Deck();
+    deck->init();
+    playGame.setCurrentDeck(*deck);
 
     EXPECT_CALL(mock, callGetHand(_))
     .Times(3)
@@ -147,36 +166,39 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17Withou
         hand.push_back(cardDiamond);
     });
 
-    EXPECT_CALL(mock, callGetDeck(_))
-    .Times(1)
-    .WillOnce(Return(deck));
-
     playGame.playDealersRound(&mock);
 
     EXPECT_EQ(hand.size(),3);
 }
 
-
-TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan17TotalWithAce) {
+TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16Total) {
     MockGame mock;
 
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "nine");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "two");
+    dealer->addCardToHand(cardSpades);
+    playGame.setDealer(dealer);
 
     EXPECT_CALL(mock, callGetTotalHand(_, _))
     .Times(1)
-    .WillOnce(Return(16));
+    .WillOnce(Return(15));
 
     EXPECT_EQ(playGame.determineIfDealerShouldDraw(&mock, false), true);
 }
 
-TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan17InTotalWithNoAce) {
+TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithNoAce) {
     MockGame mock;
 
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "nine");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "nine");
+    dealer->addCardToHand(cardSpades);
+    playGame.setDealer(dealer);
     
     EXPECT_CALL(mock, callGetTotalHand(_, _))
     .Times(1)
@@ -185,12 +207,17 @@ TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreTh
     EXPECT_EQ(playGame.determineIfDealerShouldDraw(&mock, false), false);
 }
 
-TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan17InTotalWithAnAce) {
+
+TEST(DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreThan16InTotalWithAnAce) {
     MockGame mock;
 
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "nine");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
+    dealer->addCardToHand(cardSpades);
+    playGame.setDealer(dealer);
 
     EXPECT_CALL(mock, callGetTotalHand(_, _, _))
     .Times(1)
@@ -199,12 +226,16 @@ TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnFalseIfDealerHasMoreTh
     EXPECT_EQ(playGame.determineIfDealerShouldDraw(&mock, true), false);
 }
 
-TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan1InTotalWithAnAce) {
+TEST(DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessThan16InTotalWithAnAce) {
     MockGame mock;
 
     PlayGame playGame;
+    Player* dealer = new Player();
     Card cardHearts("hearts", "two");
+    dealer->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
+    dealer->addCardToHand(cardSpades);
+    playGame.setDealer(dealer);
 
     EXPECT_CALL(mock, callGetTotalHand(_, _, _))
     .Times(1)
@@ -214,7 +245,7 @@ TEST(DealerLogic_DetermineIfDealerShouldDrawShould, ReturnTrueIfDealerHasLessTha
 }
 
 
-TEST(DealerLogic_GetDealerShould, GetTheDealerAccordingToInput) {
+TEST(SetDealerShould, SetTheDealerAccordingToInput) {
     PlayGame playGame;
     Player* dealer = new Player();
     Card cardHearts("hearts", "ten");
@@ -224,4 +255,5 @@ TEST(DealerLogic_GetDealerShould, GetTheDealerAccordingToInput) {
 
     EXPECT_EQ(playGame.getDealer()->getHand()[0].getSuit(), "hearts");
     EXPECT_EQ(playGame.getDealer()->getHand()[0].getValue(), "ten");
+
 }
