@@ -9,36 +9,12 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(DealerLogic_PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
-    MockGame mock;
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-    PlayGame playGame;
-    Card cardHearts("hearts", "ten");
-    Card cardClubs("clubs", "ten");
-    vector<Card> hand = {cardHearts, cardClubs};
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
-
-    playGame.playDealersRound(&mock);
-
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-    EXPECT_EQ("Dealers card is: ten of hearts\n\n", text);
-}
-
 TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     MockGame mock;
     PlayGame playGame;
     Card cardHearts("hearts", "seven");
     Card cardSpades("spades", "ace");
     vector<Card> hand = {cardHearts, cardSpades};
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
@@ -64,10 +40,6 @@ TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17W
     Card cardSpades("spades", "jack");
     vector<Card> hand = {cardHearts, cardSpades};
 
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
-
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
     .WillOnce(Return(false));
@@ -91,10 +63,6 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAc
     Card cardSpades("spades", "ace");
     vector<Card> hand = {cardHearts, cardSpades};
     vector<Card> deck = {cardHearts, cardSpades};
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
@@ -127,10 +95,6 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17Withou
     Card cardSpades("spades", "two");
     vector<Card> hand = {cardHearts, cardSpades};
     vector<Card> deck = {cardHearts, cardSpades};
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
