@@ -2,12 +2,13 @@
 
 
 void PlayGame::determineWinnerFromNobody21(PlayGameWrapper *wrapper) {
-    setHighestValidHandValueForPlayer(wrapper, dealer);
+    wrapper->callSetHighestValidHandValueForPlayer(wrapper, dealer);
     pair<int, vector<int>> highest = wrapper->callGetListOfPlayersWithHighestScores(wrapper);
+    int dealerTotal = wrapper->callGetCurrentTotal(dealer);
 
-    if (wrapper->callGetCurrentTotal(dealer) > highest.first) {
-        wrapper->callDisplayWin(true, {}, dealer->getCurrentTotal()); 
-    } else if(wrapper->callGetCurrentTotal(dealer) == highest.first) {
+    if (dealerTotal > highest.first) {
+        wrapper->callDisplayWin(true, {}, dealerTotal); 
+    } else if(dealerTotal == highest.first) {
         wrapper->callDisplayWin(true, highest.second, highest.first); 
     } else {
         wrapper->callDisplayWin(false, highest.second, highest.first); 

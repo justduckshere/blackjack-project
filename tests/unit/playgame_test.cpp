@@ -7,7 +7,7 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(RegularGamePlayShould, ReturnTrueIfDealerHasGoneBustWhenDealersHandHasGoneBust) {
+TEST(PlayGame_RegularGamePlayShould, ReturnTrueIfDealerHasGoneBustWhenDealersHandHasGoneBust) {
     MockGame mock;
     PlayGame playGame;
 
@@ -19,7 +19,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfDealerHasGoneBustWhenDealersHandHasGoneB
     EXPECT_EQ(actual, true);
 }
 
-TEST(RegularGamePlayShould, PrintDealerHasGoneBustWhenDealersHandHasGoneBust) {
+TEST(PlayGame_RegularGamePlayShould, PrintDealerHasGoneBustWhenDealersHandHasGoneBust) {
     MockGame mock;
     PlayGame playGame;
 
@@ -38,7 +38,7 @@ TEST(RegularGamePlayShould, PrintDealerHasGoneBustWhenDealersHandHasGoneBust) {
     EXPECT_EQ(text, "\tDealer has Dealer has gone bust! Everyone else has won!!\n\n");
 }
 
-TEST(RegularGamePlayShould, ReturnTrueIfAPlayerHasAchieved21) {
+TEST(PlayGame_RegularGamePlayShould, ReturnTrueIfAPlayerHasAchieved21) {
     MockGame mock;
     PlayGame playGame;
 
@@ -48,7 +48,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfAPlayerHasAchieved21) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(2)
     .WillRepeatedly(Return(vectorPlayersAchieved21));
 
@@ -56,7 +56,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfAPlayerHasAchieved21) {
     EXPECT_EQ(actual, true);
 }
 
-TEST(RegularGamePlayShould, PrintSetTestStringIfAPlayerHasAchieved21) {
+TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfAPlayerHasAchieved21) {
     MockGame mock;
     PlayGame playGame;
 
@@ -69,7 +69,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfAPlayerHasAchieved21) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(2)
     .WillRepeatedly(Return(vectorPlayersAchieved21));
 
@@ -87,7 +87,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfAPlayerHasAchieved21) {
     EXPECT_EQ(text, "\tDealer has Example message for player over 21");
 }
 
-TEST(RegularGamePlayShould, ReturnTrueIfDealerGoesOver17) {
+TEST(PlayGame_RegularGamePlayShould, ReturnTrueIfDealerGoesOver17) {
     MockGame mock;
     PlayGame playGame;
 
@@ -97,7 +97,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfDealerGoesOver17) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -109,7 +109,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfDealerGoesOver17) {
     EXPECT_EQ(actual, true);
 }
 
-TEST(RegularGamePlayShould, PrintSetTestStringIfADealerGoesOver17) {
+TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfADealerGoesOver17) {
     MockGame mock;
     PlayGame playGame;
 
@@ -122,7 +122,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfADealerGoesOver17) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -144,7 +144,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfADealerGoesOver17) {
     EXPECT_EQ(text, "\tDealer has Example message for dealer over 17");
 }
 
-TEST(RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
+TEST(PlayGame_RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
     MockGame mock;
     PlayGame playGame;
 
@@ -154,7 +154,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -171,7 +171,7 @@ TEST(RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
     EXPECT_EQ(actual, true);
 }
 
-TEST(RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDealer) {
+TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDealer) {
     MockGame mock;
     PlayGame playGame;
 
@@ -184,7 +184,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDealer) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -204,8 +204,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDealer) {
     EXPECT_EQ(text, "\tDealer has All players but the dealer have gone bust. Game over.\n\n");
 }
 
-
-TEST(RegularGamePlayShould, ReturnFalseIfNoConditionsAreMet) {
+TEST(PlayGame_RegularGamePlayShould, ReturnFalseIfNoConditionsAreMet) {
     MockGame mock;
     PlayGame playGame;
 
@@ -215,7 +214,7 @@ TEST(RegularGamePlayShould, ReturnFalseIfNoConditionsAreMet) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -231,7 +230,7 @@ TEST(RegularGamePlayShould, ReturnFalseIfNoConditionsAreMet) {
     EXPECT_EQ(actual, false);
 }
 
-TEST(RegularGamePlayShould, PrintSetTestStringIfNoConditionsAreMet) {
+TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfNoConditionsAreMet) {
     MockGame mock;
     PlayGame playGame;
 
@@ -244,7 +243,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfNoConditionsAreMet) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(vectorPlayersAchieved21));
 
@@ -265,7 +264,7 @@ TEST(RegularGamePlayShould, PrintSetTestStringIfNoConditionsAreMet) {
 }
 
 
-TEST(InitialiseGameShould, PrintCorrectText) {
+TEST(PlayGame_InitialiseGameShould, PrintCorrectText) {
     MockGame mock;
     PlayGame playGame;
 
@@ -286,7 +285,7 @@ TEST(InitialiseGameShould, PrintCorrectText) {
 }
 
 
-TEST(PlayGameShould, PrintTheCorrectTextGivenDealerHasWonIsTrue) {
+TEST(PlayGame_PlayGameShould, PrintTheCorrectTextGivenDealerHasWonIsTrue) {
     MockGame mock;
     PlayGame playGame;
     Player* dealer = new Player();
@@ -298,7 +297,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenDealerHasWonIsTrue) {
 
     vector<int> noPlayersHaveWon = {};
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(noPlayersHaveWon));
     
@@ -318,7 +317,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenDealerHasWonIsTrue) {
     EXPECT_EQ(text, "Dealers second card is: two of hearts\n\n");
 }
 
-TEST(PlayGameShould, PrintTheCorrectTextGivenAPlayerHasWon) {
+TEST(PlayGame_PlayGameShould, PrintTheCorrectTextGivenAPlayerHasWon) {
     MockGame mock;
     PlayGame playGame;
     Player* dealer = new Player();
@@ -330,7 +329,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenAPlayerHasWon) {
 
     vector<int> playersHaveWon = {1};
 
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(playersHaveWon));
     
@@ -350,7 +349,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenAPlayerHasWon) {
     EXPECT_EQ(text, "Dealers second card is: two of hearts\n\n");
 }
 
-TEST(PlayGameShould, PrintTheCorrectTextGivenNobodyHasWonTheInitialRound) {
+TEST(PlayGame_PlayGameShould, PrintTheCorrectTextGivenNobodyHasWonTheInitialRound) {
     MockGame mock;
     PlayGame playGame;
     Player* dealer = new Player();
@@ -361,7 +360,7 @@ TEST(PlayGameShould, PrintTheCorrectTextGivenNobodyHasWonTheInitialRound) {
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
 
     vector<int> noPlayersHaveWon = {};
-    EXPECT_CALL(mock, callVerifyAnyPlayerHasAchieved21(_))
+    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
     .Times(1)
     .WillOnce(Return(noPlayersHaveWon));
     

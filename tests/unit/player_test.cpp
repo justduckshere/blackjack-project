@@ -9,6 +9,12 @@ TEST(PlayerGetHandShould, ReturnZeroOnInitialisation) {
   EXPECT_EQ(player.getHand().size(), 0);
 }
 
+TEST(PlayerGetCurrentTotalShould, ReturnZeroOnInitialisation){
+  Player player;
+  EXPECT_EQ(player.getCurrentTotal(), 0);
+}
+
+
 TEST(PlayerAddCardToHandShould, IncreaseTheHandSizeByOne){
   Player player;
   Card card("hearts", "one");
@@ -24,19 +30,28 @@ TEST(PlayerAddCardToHandShould, HaveHandWithThatCardOnly){
   ASSERT_TRUE(player.getHand()[0].getSuit() == card.getSuit());
 }
 
-TEST(SetPlayerHasGoneBustShould, SetTheBoolToTrue) {
+
+TEST(PlayerGetPlayerHasGoneBustShould, ReturnFalseOnInitialisedPlayer) {
+  Player player;
+  EXPECT_EQ(player.getPlayerHasGoneBust(), false);
+}
+
+
+TEST(PlayerSetPlayerHasGoneBustShould, SetTheBoolToTrue) {
   Player player;
   player.setPlayerHasGoneBust();
   EXPECT_EQ(player.getPlayerHasGoneBust(), true);
 }
 
-TEST(SetCurrentTotalShould, SetCurrentTotalToTheInputValue) {
+
+TEST(PlayerSetCurrentTotalShould, SetCurrentTotalToTheInputValue) {
   Player player;
   player.setCurrentTotal(12);
   EXPECT_EQ(player.getCurrentTotal(), 12);
 }
 
-TEST(DisplayHandShould, DisplaySimpleHandAsExpected) {
+
+TEST(PlayerDisplayHandShould, DisplaySimpleHandAsExpected) {
   stringstream buffer;
   streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
   Player player;    
@@ -51,7 +66,7 @@ TEST(DisplayHandShould, DisplaySimpleHandAsExpected) {
   EXPECT_EQ(text,"a ace of hearts\n\n");
 }
 
-TEST(DisplayHandShould, DisplayComplexHandAsExpected) {
+TEST(PlayerDisplayHandShould, DisplayComplexHandAsExpected) {
   stringstream buffer;
   streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
   Player player;    

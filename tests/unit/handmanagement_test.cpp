@@ -13,13 +13,13 @@ using ::testing::_;
 using ::testing::Field;
 using ::testing::Invoke;
 
-TEST(DealToEveryoneShould, HaveCardsPlacedInCorrectOrderWhenCalledTwice) {
+TEST(HandManagement_DealToEveryoneShould, HaveCardsPlacedInCorrectOrderWhenCalledTwice) {
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
     Player* player = new Player();
     vector<Card> hand = {};
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
 
@@ -33,6 +33,9 @@ TEST(DealToEveryoneShould, HaveCardsPlacedInCorrectOrderWhenCalledTwice) {
         Card card2("hearts", "ten");
         hand.push_back(card2);
     });
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(2)
+    .WillRepeatedly(Return(validDeck));
 
     playGame.dealToEveryone(&mock);
     playGame.dealToEveryone(&mock);
@@ -41,12 +44,12 @@ TEST(DealToEveryoneShould, HaveCardsPlacedInCorrectOrderWhenCalledTwice) {
     EXPECT_EQ(hand[1].getValue(), "ten");
 }
 
-TEST(DealToEveryoneShould, IncreaseDealersandPlayersHandByOne) {
+TEST(HandManagement_DealToEveryoneShould, IncreasePlayersHandByOne) {
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
     Player* player = new Player();
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     vector<Card> hand = {};
     vector<Card> dealerHand = {};
     vector<Player*> players = {player};
@@ -66,6 +69,9 @@ TEST(DealToEveryoneShould, IncreaseDealersandPlayersHandByOne) {
         dealerHand.push_back(card2);
     });
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillRepeatedly(Return(validDeck));
 
     playGame.dealToEveryone(&mock);
 
@@ -73,11 +79,34 @@ TEST(DealToEveryoneShould, IncreaseDealersandPlayersHandByOne) {
     EXPECT_EQ(hand.size(), 1);
 }
 
-TEST(DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
+TEST(HandManagement_DealToEveryoneShould, IncreaseDealersHandByOne) {
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
+    vector<Card> dealerHand = {};
+
+    EXPECT_CALL(mock, callAddCardToHand(_, _))
+    .Times(1)
+    .WillOnce([&dealerHand](Player* player, Card card){
+        Card card2("hearts", "ace");
+        dealerHand.push_back(card2);
+    });
+
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(validDeck));
+
+    playGame.dealToEveryone(&mock);
+
+    EXPECT_EQ(dealerHand.size(), 1);
+}
+
+TEST(HandManagement_DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
+    MockGame mock;
+    PlayGame playGame;
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     Player* player = new Player();
     vector<Card> hand1 = {};
     Player* player2 = new Player();
@@ -96,6 +125,10 @@ TEST(DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
         hand2.push_back(card);
     });
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillRepeatedly(Return(validDeck));
+
     playGame.dealToEveryone(&mock);
 
     EXPECT_EQ(hand1.size(), 1);
@@ -103,11 +136,11 @@ TEST(DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
     
 }
 
-TEST(DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
+TEST(HandManagement_DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     Player* player = new Player();
     vector<Card> hand = {};
     vector<Player*> players = {player};
@@ -119,6 +152,10 @@ TEST(DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
         hand.push_back(card);
     });
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(2)
+    .WillRepeatedly(Return(validDeck));
+
     playGame.setPlayerList(players);
 
     playGame.dealToEveryone(&mock);
@@ -127,11 +164,11 @@ TEST(DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
     EXPECT_EQ(hand.size(), 2);
 }
 
-TEST(DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
+TEST(HandManagement_DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     Player* player = new Player();
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
@@ -150,6 +187,10 @@ TEST(DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
         deckVector.pop_back();
     });
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(validDeck));
+
     playGame.dealToEveryone(&mock);
 
     EXPECT_EQ(deckVector.size(), 1);
@@ -157,18 +198,17 @@ TEST(DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
 
 
 
-TEST(DealToPlayerShould, IncreaseThePlayersHandSize) {
+TEST(HandManagement_DealToPlayerShould, IncreaseThePlayersHandSize) {
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     Player* player = new Player();
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
 
     Card card("heart", "one");
     vector<Card> returnedCards = {card};
-
 
     EXPECT_CALL(mock, callAddCardToHand(_, _))
     .Times(1)
@@ -184,18 +224,23 @@ TEST(DealToPlayerShould, IncreaseThePlayersHandSize) {
     EXPECT_CALL(mock, callRemovePlayedCard( _))
     .Times(1);
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(validDeck));
+
     playGame.dealToPlayer(&mock, 0);
+
     EXPECT_EQ(player->getHand().size(), 1);
 }
 
-TEST(DealToPlayerShould, PrintThePlayersDealtCard) {
+TEST(HandManagement_DealToPlayerShould, PrintThePlayersDealtCard) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
 
     MockGame mock;
     PlayGame playGame;
-    Deck deck;
-    deck.init();
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
     Player* player = new Player();
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
@@ -217,6 +262,10 @@ TEST(DealToPlayerShould, PrintThePlayersDealtCard) {
     EXPECT_CALL(mock, callRemovePlayedCard(_))
     .Times(1);
 
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(validDeck));
+
     playGame.dealToPlayer(&mock, 0);
 
     string text = buffer.str();
@@ -225,21 +274,53 @@ TEST(DealToPlayerShould, PrintThePlayersDealtCard) {
     EXPECT_EQ("\t\tPlayer 1 has been dealt a ace of heart\n\n", text);
 }
 
-
-
-TEST(GetTotalHandShould, ReturnZeroForNoneInHand) {
+TEST(HandManagement_DealToPlayerShould, DecreaseTheDeckSizeByOneForOnePlayer) {
     MockGame mock;
     PlayGame playGame;
-    Card card("hearts", "ace");
-    vector<Card> hand = {card};
+    Card card("heart", "one");
+    vector<Card> returnedCards = {card};
+    Card validCardForBackOfDeck("valid", "valid"); 
+    vector<Card> validDeck = {validCardForBackOfDeck};
+    vector<int> deckVector = {1, 1, 1};
+    Player* player = new Player();
+    vector<Player*> players = {player};
+    playGame.setPlayerList(players);
+
+    EXPECT_CALL(mock, callGetHand(_))
+    .Times(2)
+    .WillOnce(Return(returnedCards))
+    .WillOnce(Return(returnedCards));
+
+    EXPECT_CALL(mock, callRemovePlayedCard( _))
+    .Times(1)
+    .WillOnce([&deckVector](Deck deck){
+        deckVector.pop_back();
+    });
+
+    EXPECT_CALL(mock, callGetDeck(_))
+    .Times(1)
+    .WillOnce(Return(validDeck));
+
+    playGame.dealToPlayer(&mock, 0);
+
+
+    EXPECT_EQ(deckVector.size(), 2);
+}
+
+
+
+TEST(HandManagement_GetTotalHandShould, ReturnZeroForNoneInHand) {
+    MockGame mock;
+    PlayGame playGame;
+    vector<Card> hand = {};
     
-    ON_CALL(mock, callGetCardTrueValue(_))
-    .WillByDefault(Return(0));
+    EXPECT_CALL(mock, callGetCardTrueValue(_))
+    .Times(0);
 
     EXPECT_EQ(playGame.getTotalHand(&mock, hand), 0);
 }
 
-TEST(GetTotalHandShould, ReturnTwentyForTotalOfTwentyInHand) {
+TEST(HandManagement_GetTotalHandShould, ReturnTwentyForTwoTensInHand) {
     MockGame mock;
     PlayGame playGame;
     vector<Card> hand = {};
@@ -248,13 +329,14 @@ TEST(GetTotalHandShould, ReturnTwentyForTotalOfTwentyInHand) {
     Card cardSpades("spades", "jack");
     hand.push_back(cardSpades);
 
-    ON_CALL(mock, callGetCardTrueValue(_))
-    .WillByDefault(Return(10));
+    EXPECT_CALL(mock, callGetCardTrueValue(_))
+    .Times(2)
+    .WillRepeatedly(Return(10));
 
     EXPECT_EQ(playGame.getTotalHand(&mock, hand), 20);
 }
 
-TEST(GetTotalHandShould, Return20GivenNineAndAce) {
+TEST(HandManagement_GetTotalHandShould, Return20GivenNineAndAce) {
     MockGame mock;
     PlayGame playGame;
     vector<Card> hand = {};
@@ -270,7 +352,24 @@ TEST(GetTotalHandShould, Return20GivenNineAndAce) {
     EXPECT_EQ(playGame.getTotalHand(&mock, hand, 11), 20);
 }
 
-TEST(GetTotalHandShould, Return13GivenThreeAces) {
+TEST(HandManagement_GetTotalHandShould, ReturnTenGivenNineAndAce) {
+    MockGame mock;
+    PlayGame playGame;
+    vector<Card> hand = {};
+    Card cardHearts("hearts", "nine");
+    hand.push_back(cardHearts);
+    Card cardSpades("spades", "ace");
+    hand.push_back(cardSpades);
+
+    EXPECT_CALL(mock, callGetCardTrueValue(_))
+    .Times(2)
+    .WillOnce(Return(1))
+    .WillOnce(Return(9));
+
+    EXPECT_EQ(playGame.getTotalHand(&mock, hand, 1), 10);
+}
+
+TEST(HandManagement_GetTotalHandShould, Return13GivenThreeAces) {
     MockGame mock;
     PlayGame playGame;
     vector<Card> hand = {};
@@ -289,27 +388,17 @@ TEST(GetTotalHandShould, Return13GivenThreeAces) {
     EXPECT_EQ(playGame.getTotalHand(&mock, hand, 11), 13);
 }
 
-TEST(GetTotalHandShould, ReturnTenGivenNineAndAce) {
-    MockGame mock;
-    PlayGame playGame;
-    vector<Card> hand = {};
-    Card cardHearts("hearts", "nine");
-    hand.push_back(cardHearts);
-    Card cardSpades("spades", "ace");
-    hand.push_back(cardSpades);
-
-    EXPECT_CALL(mock, callGetCardTrueValue(_))
-    .Times(2)
-    .WillOnce(Return(1))
-    .WillOnce(Return(9));
-
-    EXPECT_EQ(playGame.getTotalHand(&mock, hand, 1), 10);
-}
 
 
-TEST(GetDeckShould, ReturnADeckOfSize52AfterInitialisation) {
+TEST(HandManagement_GetDeckShould, ReturnADeckOfSize52AfterInitialisation) {
     PlayGame playGame;
     Deck deck;
     deck.init();
     EXPECT_EQ(deck.getDeck().size(), 52);
+} 
+
+TEST(HandManagement_GetDeckShould, ReturnADeckOfSize52BeforeInitialisation) {
+    PlayGame playGame;
+    Deck deck;
+    EXPECT_EQ(deck.getDeck().size(), 0);
 } 
