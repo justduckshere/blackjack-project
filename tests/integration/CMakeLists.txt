@@ -5,7 +5,7 @@ add_executable(
     gamelogic_test.cpp
     winnerhandler_test.cpp
     playerlogic_test.cpp
-    # handmanagement_test.cpp
+    handmanagement_test.cpp
     main_test.cpp
 )
 
