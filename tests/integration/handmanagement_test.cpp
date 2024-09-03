@@ -9,7 +9,7 @@ using ::testing::Return;
 
 
 
-TEST(DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
+TEST(HandManagement_DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     Player* player = new Player();
@@ -29,7 +29,7 @@ TEST(DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
     
 }
 
-TEST(DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
+TEST(HandManagement_DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     Player* player = new Player();
@@ -45,7 +45,7 @@ TEST(DealToEveryoneShould, IncreasePlayersHandSizesByTwoWhenCalledTwice) {
 }
 
 
-TEST(DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
+TEST(HandManagement_DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     Player* player = new Player();
@@ -59,7 +59,7 @@ TEST(DealToEveryoneShould, DecreaseTheDeckSizeByTwoForOnePlayer) {
     EXPECT_EQ(playGame.getDeck().getDeck().size(), 50);
 }
 
-TEST(DealToPlayerShould, IncreaseThePlayersHandSize) {
+TEST(HandManagement_DealToPlayerShould, IncreaseThePlayersHandSize) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     Player* player = new Player();
@@ -73,7 +73,7 @@ TEST(DealToPlayerShould, IncreaseThePlayersHandSize) {
 
 
 
-TEST(GetTotalHandShould, ReturnZeroForNoneInHand) {
+TEST(HandManagement_GetTotalHandShould, ReturnZeroForNoneInHand) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     vector<Card> hand = {};
@@ -81,7 +81,7 @@ TEST(GetTotalHandShould, ReturnZeroForNoneInHand) {
     EXPECT_EQ(playGame.getTotalHand(playGameWrapper, hand), 0);
 }
 
-TEST(GetTotalHandShould, ReturnTwentyForTotalOfTwentyInHand) {
+TEST(HandManagement_GetTotalHandShould, ReturnTwentyForTotalOfTwentyInHand) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     vector<Card> hand = {};
@@ -93,7 +93,7 @@ TEST(GetTotalHandShould, ReturnTwentyForTotalOfTwentyInHand) {
     EXPECT_EQ(playGame.getTotalHand(playGameWrapper, hand), 20);
 }
 
-TEST(GetTotalHandShould, Return20GivenNineAndAce) {
+TEST(HandManagement_GetTotalHandShould, Return20GivenNineAndAce) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     vector<Card> hand = {};
@@ -105,7 +105,7 @@ TEST(GetTotalHandShould, Return20GivenNineAndAce) {
     EXPECT_EQ(playGame.getTotalHand(playGameWrapper, hand, 11), 20);
 }
 
-TEST(GetTotalHandShould, Return13GivenThreeAces) {
+TEST(HandManagement_GetTotalHandShould, Return13GivenThreeAces) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     vector<Card> hand = {};
@@ -119,7 +119,7 @@ TEST(GetTotalHandShould, Return13GivenThreeAces) {
     EXPECT_EQ(playGame.getTotalHand(playGameWrapper, hand, 11), 13);
 }
 
-TEST(GetTotalHandShould, ReturnTenGivenNineAndAce) {
+TEST(HandManagement_GetTotalHandShould, ReturnTenGivenNineAndAce) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     vector<Card> hand = {};
