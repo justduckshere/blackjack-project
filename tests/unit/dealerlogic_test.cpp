@@ -9,28 +9,8 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(PlayDealersRoundShould, PrintOutTheDealersLatestDealtCard) {
-    MockGame mock;
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-    PlayGame playGame;
-    Player* dealer = new Player();
-    Card cardHearts("hearts", "ten");
-    dealer->addCardToHand(cardHearts);
-    vector<Card> hand = {cardHearts};
-    playGame.setDealer(dealer);
+TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
 
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
-
-    playGame.playDealersRound(&mock);
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-    EXPECT_EQ("Dealers card is: ten of hearts\n\n", text);
-}
-
-TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     MockGame mock;
     PlayGame playGame;
     Player* dealer = new Player();
@@ -40,10 +20,6 @@ TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithAce) {
     dealer->addCardToHand(cardSpades);
     vector<Card> hand = {cardHearts, cardSpades};
     playGame.setDealer(dealer);
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
@@ -72,10 +48,6 @@ TEST(PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17WithoutAce) {
     dealer->addCardToHand(cardSpades);    
     vector<Card> hand = {cardHearts, cardSpades};
     playGame.setDealer(dealer);
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
@@ -107,10 +79,6 @@ TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAce) {
     deck->init();
     playGame.setCurrentDeck(*deck);
 
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)
@@ -146,10 +114,6 @@ TEST(PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithoutAce) {
     Deck* deck = new Deck();
     deck->init();
     playGame.setCurrentDeck(*deck);
-
-    EXPECT_CALL(mock, callGetHand(_))
-    .Times(3)
-    .WillRepeatedly(Return(hand));
 
     EXPECT_CALL(mock, callDetermineIfDealerShouldDraw(_, _))
     .Times(1)

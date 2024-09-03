@@ -2,7 +2,6 @@
 
 
 void PlayGame::playDealersRound(PlayGameWrapper* wrapper) {
-    cout << "Dealers card is: "<< wrapper->callGetHand(dealer).front().getValue() << " of "<< wrapper->callGetHand(dealer).front().getSuit() << endl << endl;
     bool hasAce = wrapper->callCheckIfHandHasAce(wrapper->callGetHand(dealer));
     bool shouldDraw = wrapper->callDetermineIfDealerShouldDraw(wrapper, hasAce);
     if (shouldDraw == true) {

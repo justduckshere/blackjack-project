@@ -39,6 +39,7 @@ bool PlayGame::regularGamePlay(PlayGameWrapper *wrapper){
     playPlayersRound(wrapper);
     cout << "\tDealer has ";
     wrapper->callDisplayHand(dealer);
+    wrapper->callSetHighestValidHandValueForPlayer(wrapper, dealer);
 
     if (wrapper->callCheckIfHandHasGoneBust(wrapper, wrapper->callGetHand(getDealer()))) {
         cout << "Dealer has gone bust! Everyone else has won!!" << endl <<endl;
