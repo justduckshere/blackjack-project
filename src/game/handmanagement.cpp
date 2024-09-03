@@ -6,12 +6,12 @@ void PlayGame::dealToEveryone(PlayGameWrapper *wrapper){
     for (int i =0; i < getPlayerList().size(); i++) {    
         wrapper->callDealToPlayer(wrapper, i);
     }
-    wrapper->callAddCardToHand(dealer, wrapper->callGetDeck(currentDeck).back());
+    wrapper->callAddCardToHand(dealer, currentDeck.getDeck().back());
     wrapper->callRemovePlayedCard(currentDeck);
 }
 
 void PlayGame::dealToPlayer(PlayGameWrapper *wrapper, int playerNumber) {
-    wrapper->callAddCardToHand(getPlayerList()[playerNumber], wrapper->callGetDeck(currentDeck).back());
+    wrapper->callAddCardToHand(getPlayerList()[playerNumber], currentDeck.getDeck().back());
     cout << "\t\tPlayer " << playerNumber+1 << " has been dealt a " << wrapper->callGetHand(getPlayerList()[playerNumber]).front().getValue() << " of "<< wrapper->callGetHand(getPlayerList()[playerNumber]).front().getSuit() << endl<<endl;
     wrapper->callRemovePlayedCard(currentDeck);
 }

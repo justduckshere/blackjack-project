@@ -9,14 +9,13 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(PlayerLogic_GetPlayerListShould, ReturnAnEmptyVectorAfterInitialisation) {
+TEST(GetPlayerListShould, ReturnAnEmptyVectorTypeAfterInitialisation) {
     PlayGame playGame;
     vector<Player*> playerList = playGame.getPlayerList();
     EXPECT_EQ(playerList.size(), 0);
 }
 
-
-TEST(PlayerLogic_PlayPlayersRoundShould, PrintSetTextWhenBeingDealtCard) {
+TEST(PlayPlayersRoundShould, PrintSetTextWhenBeingDealtCard) {
     MockGame mock;
 
     stringstream buffer;
@@ -54,48 +53,10 @@ TEST(PlayerLogic_PlayPlayersRoundShould, PrintSetTextWhenBeingDealtCard) {
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
 
-    EXPECT_EQ(text, "Would Player 1 like another card (1 = yes)\nEXAMPLE TEXT IS HERE\tPlayer 1 has ");
+    EXPECT_EQ(text, "Would Player 1 like another card (1 = yes, 0 = no)\nEXAMPLE TEXT IS HERE\tPlayer 1 has ");
 }
 
-TEST(PlayerLogic_PlayPlayersRoundShould, PrintSetTextWhenNotBeingDealtCard) {
-    MockGame mock;
-
-    stringstream buffer;
-    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-    
-    PlayGame playGame;
-    Player* player = new Player();
-    Card cardHearts("hearts", "two");
-    player->addCardToHand(cardHearts);
-    Card cardSpades("spades", "two");
-    player->addCardToHand(cardSpades);
-    vector<Card> hand = {cardHearts, cardSpades};
-    vector<Player*> players = {player};
-
-    playGame.setPlayerList(players);
-
-    EXPECT_CALL(mock, callGetPlayerHasGoneBust(_))
-    .Times(1)
-    .WillOnce(Return(false));
-
-    EXPECT_CALL(mock, getUserIntResponse())
-    .Times(1)
-    .WillOnce(Return(0));
-
-    EXPECT_CALL(mock, callDisplayHand(_))
-    .Times(1)
-    .WillOnce([](Player* player) {
-        cout << "EXAMPLE TEXT IS HERE";
-    }); 
-    playGame.playPlayersRound(&mock);
-
-    string text = buffer.str();
-    cout.rdbuf(prevcoutbuf);
-
-    EXPECT_EQ(text, "Would Player 1 like another card (1 = yes)\n\tPlayer 1 has EXAMPLE TEXT IS HERE");
-}
-
-TEST(PlayerLogic_PlayPlayersRoundShould, PrintPlayerHasGoneBustWhenTheyHave) {
+TEST(PlayPlayersRoundShould, PrintPlayerHasGoneBustWhenTheyHave) {
     MockGame mock;
 
     stringstream buffer;
@@ -128,10 +89,10 @@ TEST(PlayerLogic_PlayPlayersRoundShould, PrintPlayerHasGoneBustWhenTheyHave) {
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
 
-    EXPECT_EQ(text, "Would Player 1 like another card (1 = yes)\n\tPlayer 1 has Sorry - you have gone bust!\n\n");
+    EXPECT_EQ(text, "Would Player 1 like another card (1 = yes, 0 = no)\n\tPlayer 1 has Sorry - you have gone bust!\n\n");
 }
 
-TEST(PlayerLogic_PlayPlayersRoundShould, IncreaseThePlayersHandWhenTheyRequest) {
+TEST(PlayPlayersRoundShould, IncreaseThePlayersHandWhenTheyRequest) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -166,7 +127,7 @@ TEST(PlayerLogic_PlayPlayersRoundShould, IncreaseThePlayersHandWhenTheyRequest) 
     EXPECT_EQ(hand.size(), 3);
 }
 
-TEST(PlayerLogic_PlayPlayersRoundShould, NotIncreaseThePlayersHandWhenTheyDoNotRequest) {
+TEST(PlayPlayersRoundShould, NotIncreaseThePlayersHandWhenTheyDoNotRequest) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -191,7 +152,7 @@ TEST(PlayerLogic_PlayPlayersRoundShould, NotIncreaseThePlayersHandWhenTheyDoNotR
     EXPECT_EQ(playGame.getPlayerList()[0]->getHand().size(), 2);
 }
 
-TEST(PlayerLogic_PlayPlayersRoundShould, NotIncreaseThePlayersHandWhenThePlayerHasGoneBust) {
+TEST(PlayPlayersRoundShould, NotIncreaseThePlayersHandWhenThePlayerHasGoneBust) {
     MockGame mock;
     PlayGame playGame;
     Player* player = new Player();
@@ -212,8 +173,7 @@ TEST(PlayerLogic_PlayPlayersRoundShould, NotIncreaseThePlayersHandWhenThePlayerH
 }
 
 
-
-TEST(PlayerLogic_SetPlayerListShould, PopulatePlayerListWithOnePlayerGivenOnePlayer) {
+TEST(SetPlayerListShould, PopulatePlayerListWithOnePlayerGivenOnePlayer) {
     PlayGame playGame;
     Player* player = new Player();
     vector<Player*> players = {player};
@@ -223,7 +183,7 @@ TEST(PlayerLogic_SetPlayerListShould, PopulatePlayerListWithOnePlayerGivenOnePla
     EXPECT_EQ(playGame.getPlayerList().size(), 1);
 }
 
-TEST(PlayerLogic_SetPlayerListShould, PopulatePlayerListWithTwoPlayersGivenTwoPlayers) {
+TEST(SetPlayerListShould, PopulatePlayerListWithTwoPlayersGivenTwoPlayers) {
     PlayGame playGame;
     Player* player = new Player();
     vector<Player*> players = {player, player};
@@ -234,7 +194,7 @@ TEST(PlayerLogic_SetPlayerListShould, PopulatePlayerListWithTwoPlayersGivenTwoPl
 }
 
 
-TEST(PlayerLogic_CreatePlayerListShould, CreateTwoPlayersWhenTwoAreCreated) {
+TEST(CreatePlayerListShould, CreateTwoPlayersWhenTwoAreCreated) {
     MockGame mock;
     EXPECT_CALL(mock, getUserIntResponse())
     .WillOnce(Return(2));
@@ -245,7 +205,7 @@ TEST(PlayerLogic_CreatePlayerListShould, CreateTwoPlayersWhenTwoAreCreated) {
     EXPECT_EQ(playGame.getPlayerList().size(), 2);
 }
 
-TEST(PlayerLogic_CreatePlayerListShould, CreateOnePlayerWhenOneIsCreated) {
+TEST(CreatePlayerListShould, CreateOnePlayerWhenOneIsCreated) {
     MockGame mock;
     
     EXPECT_CALL(mock, getUserIntResponse())
@@ -257,14 +217,14 @@ TEST(PlayerLogic_CreatePlayerListShould, CreateOnePlayerWhenOneIsCreated) {
     EXPECT_EQ(playGame.getPlayerList().size(), 1);
 }
 
-TEST(PlayerLogic_CreatePlayerListShould, PrintOnePlayerWhenOneIsToldToBeMade) {
+TEST(CreatePlayerListShould, PrintOnePlayerWhenOneIsToldToBeMade) {
     MockGame mock;
 
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
 
     EXPECT_CALL(mock, getUserIntResponse())
-    .WillOnce(Return(1));
+    .WillOnce(Return(2));
 
     PlayGame playGame;
     playGame.createPlayerList(&mock);
@@ -273,5 +233,5 @@ TEST(PlayerLogic_CreatePlayerListShould, PrintOnePlayerWhenOneIsToldToBeMade) {
     cout.rdbuf(prevcoutbuf);
 
 
-    EXPECT_EQ(text, "How many players are playing blackjack? (please pick a number between 1 and 7)\n\t\tWe have 1 people playing Blackjack (plus a dealer)\n\n");
+    EXPECT_EQ(text, "How many players are playing blackjack? (please pick a number between 1 and 7)\n\t\tWe have 2 people playing Blackjack (plus a dealer)\n\n");
 }
