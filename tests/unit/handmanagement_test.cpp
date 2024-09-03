@@ -3,7 +3,7 @@
 #include "game/playgame.h"
 #include "hand/card.h"
 #include "hand/deck.h"
-#include "wrapper.h"
+#include "../wrapper.h"
 #include <sstream>
 #include <iostream>
 

@@ -3,7 +3,7 @@
 #include "game/playgame.h"
 #include "hand/deck.h"
 #include <sstream>
-#include "wrapper.h"
+#include "../wrapper.h"
 
 using namespace std;
 using ::testing::Return;

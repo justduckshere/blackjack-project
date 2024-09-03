@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "game/playgame.h"
-#include "wrapper.h"
+#include "../wrapper.h"
 
 using namespace std;
 using ::testing::Return;

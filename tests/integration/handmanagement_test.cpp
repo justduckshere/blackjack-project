@@ -119,7 +119,7 @@ TEST(HandManagement_GetTotalHandShould, Return13GivenThreeAces) {
     EXPECT_EQ(playGame.getTotalHand(playGameWrapper, hand, 11), 13);
 }
 
-TEST(HandManagement_GetTotalHandShould, ReturnTenGivenNineAndAce) {
+TEST(GetTotalHandShould, ReturnTenGivenNineAndAce) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
     PlayGame playGame;
     vector<Card> hand = {};
