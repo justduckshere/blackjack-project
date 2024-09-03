@@ -14,7 +14,6 @@ public:
     MOCK_METHOD(int, callGetTotalHand, (PlayGameWrapper* wrapper, vector<Card> hand, int aceValue), (override));
     MOCK_METHOD(bool, callDetermineIfDealerShouldDraw, (PlayGameWrapper* wrapper, bool hasAce), (override));
     MOCK_METHOD(bool, callCheckIfHandHasAce, (vector<Card> hand), (override));
-    MOCK_METHOD(vector<Card>, callGetDeck, (Deck inputDeck), (override));
 
     MOCK_METHOD(int, callGetCardTrueValue, (Card card), (override));
     MOCK_METHOD(int, getUserIntResponse, (), (override));
@@ -34,7 +33,7 @@ public:
     MOCK_METHOD(bool, callCheckIfHandHasWon, (PlayGameWrapper *wrapper, vector<Card> hand), (override));
     MOCK_METHOD(bool, callCheckIfHandHasWonWithAce, (PlayGameWrapper *wrapper, vector<Card> hand, int aceValue), (override));
 
-    MOCK_METHOD(vector<int>, callReturnListOfPlayersAt21, (PlayGameWrapper* wrapper), (override));
+    MOCK_METHOD(vector<int>, callVerifyAnyPlayerHasAchieved21, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(void, callDetermineWinnerFromNobody21, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(void, callPlayDealersRound, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(bool, callCheckIfAllPlayersHaveGoneBust, (PlayGameWrapper* wrapper), (override));

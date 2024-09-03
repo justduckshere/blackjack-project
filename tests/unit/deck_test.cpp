@@ -1,19 +1,19 @@
 #include <gtest/gtest.h>
 #include "deck.h"
 
-TEST(Deck_GetDeckSizeShould, Be52AfterInit) {
+TEST(GetDeckSizeShould, Be52AfterInit) {
     Deck deck;
     deck.init();
     EXPECT_EQ(deck.getDeck().size(), 52);
 }
 
-TEST(Deck_GetDeckSizeShould, Be0WithoutInit) {
+TEST(GetDeckSizeShould, Be0WithoutInit) {
     Deck deck;
     EXPECT_EQ(deck.getDeck().size(), 0);
 }
 
 
-TEST(Deck_RemovePlayedCardShould, HaveADifferentLastElement) {
+TEST(RemovePlayedCardShould, HaveADifferentLastElement) {
     Deck deck;
     deck.init();
     Card lastElement = deck.getDeck().back();
@@ -21,14 +21,14 @@ TEST(Deck_RemovePlayedCardShould, HaveADifferentLastElement) {
     ASSERT_TRUE(lastElement.getValue() != deck.getDeck().back().getValue());
 }
 
-TEST(Deck_RemovePlayedCardShould, HaveADeckSizeOf51WhenCalledTwice) {
+TEST(RemovePlayedCardShould, HaveADeckSizeOf51WhenCalledTwice) {
     Deck deck;
     deck.init();
     deck.removePlayedCard();
     ASSERT_TRUE(deck.getDeck().size() == 51);
 }
 
-TEST(Deck_RemovePlayedCardShould, HaveADeckSizeOf50WhenCalledTwice) {
+TEST(RemovePlayedCardShould, HaveADeckSizeOf50WhenCalledTwice) {
     Deck deck;
     deck.init();
     deck.removePlayedCard();
@@ -38,7 +38,7 @@ TEST(Deck_RemovePlayedCardShould, HaveADeckSizeOf50WhenCalledTwice) {
 
 
 //this is ugly... sorry
-TEST(Deck_ShuffledDeckShould, NeverBeTheSameAsInputDeck) {
+TEST(ShuffledDeckShould, NeverBeTheSameAsInputDeck) {
     Deck deck;
     Deck newDeck;
     deck.shuffle();
