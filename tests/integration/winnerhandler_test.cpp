@@ -4,10 +4,11 @@
 #include <sstream>
 
 
-TEST(DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenNoPlayers) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenNoPlayers) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* dealer = new Player();
     Card cardHearts("hearts", "ace");
     dealer->addCardToHand(cardHearts);
@@ -15,7 +16,7 @@ TEST(DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenNoPlayers) {
     dealer->addCardToHand(cardSpades);
     playGame.setDealer(dealer);
 
-    playGame.determineWinnerFromNobody21();
+    playGame.determineWinnerFromNobody21(wrapper);
 
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
@@ -24,10 +25,11 @@ TEST(DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenNoPlayers) {
     EXPECT_EQ("Dealer has won with a score of 12\n", text);
 }
 
-TEST(DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenOnePlayerWithLesserScore) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenOnePlayerWithLesserScore) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* dealer = new Player();
     Card cardHearts("hearts", "ace");
     dealer->addCardToHand(cardHearts);
@@ -43,7 +45,7 @@ TEST(DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenOnePlayerWithLes
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
 
-    playGame.determineWinnerFromNobody21();
+    playGame.determineWinnerFromNobody21(wrapper);
 
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
@@ -52,10 +54,11 @@ TEST(DetermineWinnerFromNobody21Should, PrintDealerAsWinnerGivenOnePlayerWithLes
     EXPECT_EQ("Dealer has won with a score of 12\n", text);
 }
 
-TEST(DetermineWinnerFromNobody21Should, PrintPlayerOneAsWinnerGivenPlayerHasHigherScore) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintPlayerOneAsWinnerGivenPlayerHasHigherScore) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* dealer = new Player();
     dealer->setCurrentTotal(10);
     playGame.setDealer(dealer);
@@ -65,7 +68,7 @@ TEST(DetermineWinnerFromNobody21Should, PrintPlayerOneAsWinnerGivenPlayerHasHigh
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
 
-    playGame.determineWinnerFromNobody21();
+    playGame.determineWinnerFromNobody21(wrapper);
 
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
@@ -74,25 +77,28 @@ TEST(DetermineWinnerFromNobody21Should, PrintPlayerOneAsWinnerGivenPlayerHasHigh
     EXPECT_EQ("Player 1 has won and with a score of 12\n\n", text);
 }
 
-TEST(DetermineWinnerFromNobody21Should, PrintPlayerOneAndTwoAsWinnersGivenPlayersHaveHighestScores) {
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintPlayerOneAndTwoAsWinnersGivenPlayersHaveHighestScores) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* dealer = new Player();
-    dealer->setCurrentTotal(10);
     playGame.setDealer(dealer);
+    Card cardHearts("hearts", "two");
+    dealer->addCardToHand(cardHearts);
+    Card cardClubs("clubs", "two");
+    dealer->addCardToHand(cardClubs);
 
     Player* player = new Player();
     player->setCurrentTotal(13);
 
- 
     Player* player2 = new Player();
     player2->setCurrentTotal(13);
 
     vector<Player*> players = {player, player2};
     playGame.setPlayerList(players);
 
-    playGame.determineWinnerFromNobody21();
+    playGame.determineWinnerFromNobody21(wrapper);
 
     string text = buffer.str();
     cout.rdbuf(prevcoutbuf);
@@ -101,34 +107,37 @@ TEST(DetermineWinnerFromNobody21Should, PrintPlayerOneAndTwoAsWinnersGivenPlayer
     EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 13\n\nPlayer 2 has won with a score of: 13\n\n", text);
 }
 
-// TEST(DetermineWinnerFromNobody21Should, PrintPlayerOneAndTwoandDealerAsWinnersGivenPlayersHaveHighestScores) {
-//     stringstream buffer;
-//     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
-//     PlayGame playGame;
-//     Player* dealer = new Player();
-//     dealer->setCurrentTotal(13);
-//     playGame.setDealer(dealer);
+TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintPlayerOneAndTwoandDealerAsWinnersGivenPlayersHaveHighestScores) {
+    stringstream buffer;
+    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
+    PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
+    Player* dealer = new Player();
+    playGame.setDealer(dealer);
+    Card cardHearts("hearts", "ace");
+    dealer->addCardToHand(cardHearts);
+    Card cardClubs("clubs", "two");
+    dealer->addCardToHand(cardClubs);
 
-//     Player* player = new Player();
-//     player->setCurrentTotal(13);
+    Player* player = new Player();
+    player->setCurrentTotal(13);
 
-//     Player* player2 = new Player();
-//     player2->setCurrentTotal(13);
+    Player* player2 = new Player();
+    player2->setCurrentTotal(13);
 
-//     vector<Player*> players = {player, player2};
-//     playGame.setPlayerList(players);
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
 
-//     playGame.determineWinnerFromNobody21();
+    playGame.determineWinnerFromNobody21(wrapper);
 
-//     string text = buffer.str();
-//     cout.rdbuf(prevcoutbuf);
+    string text = buffer.str();
+    cout.rdbuf(prevcoutbuf);
+
+    EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 13\n\nPlayer 2 has won with a score of: 13\n\nAnd Dealer has also achieved 13\n\n", text);
+}
 
 
-//     EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 13\n\nPlayer 2 has won with a score of: 13\n\nAnd Dealer has also achieved 13\n\n", text);
-// }
-
-
-TEST(DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
+TEST(WinnerHandler_DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -139,7 +148,7 @@ TEST(DisplayWin, PrintDealerWonToOutputOnDealerWinning) {
     EXPECT_EQ("Dealer has won with a score of 0\n", text);
 }
 
-TEST(DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
+TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -150,7 +159,7 @@ TEST(DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOne
     EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nAnd Dealer has also achieved 21\n\n", text);
 }
 
-TEST(DisplayWin, PrintPlayerOneHasWonOutput) {
+TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonOutput) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
     PlayGame playGame;
@@ -161,66 +170,81 @@ TEST(DisplayWin, PrintPlayerOneHasWonOutput) {
     EXPECT_EQ("Player 1 has won and with a score of 21\n\n", text);
 }
 
+TEST(WinnerHandler_DisplayWin, PrintPlayerOneAndTwoHaveWonOutputOnPlayerTie) {
+    stringstream buffer;
+    streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
+    PlayGame playGame;
+    vector<int> playerOneWon = {0, 1};
+    playGame.displayWin(false, playerOneWon, 21);
+    string text = buffer.str();
+    cout.rdbuf(prevcoutbuf);
+    EXPECT_EQ("We have a tie!\nPlayer 1 has won with a score of: 21\n\nPlayer 2 has won with a score of: 21\n\n", text);
+}
 
-TEST(setHighestValidHandValueForPlayerShould, ReturnTwentyGivenTwoJacksAndNoAce) {
+
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnTwentyGivenTwoJacksAndNoAce) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "jack");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "jack");
     player->addCardToHand(cardSpades);
 
-    playGame.setHighestValidHandValueForPlayer(player);
+    playGame.setHighestValidHandValueForPlayer(wrapper, player);
 
     EXPECT_EQ(player->getCurrentTotal(), 20);
 }
 
-TEST(setHighestValidHandValueForPlayerShould, Return20ForOneAceandANine) {
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, Return20ForOneAceandANine) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ace");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "nine");
     player->addCardToHand(cardSpades);
 
-    playGame.setHighestValidHandValueForPlayer(player);
+    playGame.setHighestValidHandValueForPlayer(wrapper, player);
 
     EXPECT_EQ(player->getCurrentTotal(), 20);
 }
 
-TEST(setHighestValidHandValueForPlayerShould, Return12ForTwoAces) {
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, Return12ForTwoAces) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ace");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
     player->addCardToHand(cardSpades);
 
-    playGame.setHighestValidHandValueForPlayer(player);
+    playGame.setHighestValidHandValueForPlayer(wrapper, player);
 
     EXPECT_EQ(player->getCurrentTotal(), 12);
 }
 
 
-
-TEST(GetListOfPlayersWithHighestScoresShould, ReturnOnePlayerWhenOnlyOnePlayerHasTheHighestScore) {
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayerWhenOnlyOnePlayerHasTheHighestScore) {
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();    
     Player* player = new Player();
-    player->setCurrentTotal(12);
+    player->setCurrentTotal(4);
 
     Player* player2 = new Player();
-    player2->setCurrentTotal(4);
+    player2->setCurrentTotal(12);
 
     vector<Player*> players = {player, player2};
     playGame.setPlayerList(players);
 
-    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores();
+    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores(wrapper);
 
     EXPECT_EQ(actual.second.size(), 1);
 }
 
-TEST(GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePlayerHasTheHighestScore) {
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayerIdWhenOnlyOnePlayerHasTheHighestScore) {
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* player = new Player();
     player->setCurrentTotal(12);
 
@@ -230,13 +254,14 @@ TEST(GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePl
     vector<Player*> players = {player, player2};
     playGame.setPlayerList(players);
 
-    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores();
+    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores(wrapper);
 
     EXPECT_EQ(actual.first, 12);
 }
 
-TEST(GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighest) {
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighest) {
     PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
     Player* player = new Player();
     player->setCurrentTotal(12);
 
@@ -246,7 +271,24 @@ TEST(GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhenBothHaveHighes
     vector<Player*> players = {player, player2};
     playGame.setPlayerList(players);
 
-    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores();
+    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores(wrapper);
 
     EXPECT_EQ(actual.second.size(), 2);
+}
+
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnlyPlayerTwosIdWhenTheyHaveTheHighestScore) {
+    PlayGame playGame;
+    PlayGameWrapper* wrapper = new PlayGame();
+    Player* player = new Player();
+    player->setCurrentTotal(4);
+
+    Player* player2 = new Player();
+    player2->setCurrentTotal(12);
+
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
+
+    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores(wrapper);
+
+    EXPECT_EQ(actual.second.back(), 1);
 }

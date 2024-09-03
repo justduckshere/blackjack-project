@@ -5,7 +5,6 @@ void PlayGame::determineWinnerFromNobody21(PlayGameWrapper *wrapper) {
     wrapper->callSetHighestValidHandValueForPlayer(wrapper, dealer);
     pair<int, vector<int>> highest = wrapper->callGetListOfPlayersWithHighestScores(wrapper);
     int dealerTotal = wrapper->callGetCurrentTotal(dealer);
-
     if (dealerTotal > highest.first) {
         wrapper->callDisplayWin(true, {}, dealerTotal); 
     } else if(dealerTotal == highest.first) {
