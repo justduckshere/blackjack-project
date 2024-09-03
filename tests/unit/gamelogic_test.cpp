@@ -8,7 +8,7 @@ using namespace std;
 using ::testing::Return;
 using ::testing::_;
 
-TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     MockGame mock;
     PlayGame playGame;
     vector<Card> hand = {};
@@ -25,7 +25,7 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     EXPECT_EQ(actual, true);  
 }
 
-TEST(VerifyHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
     MockGame mock;
     PlayGame playGame;
 
@@ -43,11 +43,15 @@ TEST(VerifyHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
     EXPECT_EQ(actual, false);  
 }
 
-TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEqualTo21) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWithOneAceAsElevenAndEqualTo21) {
     MockGame mock;
     PlayGame playGame;
 
     vector<Card> hand = {};
+
+    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    .Times(1)
+    .WillOnce(Return(true));
 
     EXPECT_CALL(mock, callCheckIfHandHasWonWithAce(_, _, 1))
     .Times(1)
@@ -57,7 +61,21 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEqu
     .Times(1)
     .WillOnce(Return(true));
 
+    bool actual = playGame.verifyHandHasWon(&mock, hand);
+    EXPECT_EQ(actual, true);    
+}
+
+TEST(GameLogic_VerifyHandHasWonShould, ReturnTrueWithOneAceAsOneAndEqualTo21) {
+    MockGame mock;
+    PlayGame playGame;
+
+    vector<Card> hand = {};
+
     EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    .Times(1)
+    .WillOnce(Return(true));
+
+    EXPECT_CALL(mock, callCheckIfHandHasWonWithAce(_, _, 1))
     .Times(1)
     .WillOnce(Return(true));
     
@@ -66,7 +84,7 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEqu
     EXPECT_EQ(actual, true);    
 }
 
-TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
+TEST(GameLogic_VerifyHandHasWonShould, ReturnFalseWithAceAndNotEqualTo21) {
     MockGame mock;
     PlayGame playGame;
 
@@ -74,7 +92,11 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
 
     EXPECT_CALL(mock, callCheckIfHandHasWonWithAce(_, _, 1))
     .Times(1)
-    .WillOnce(Return(true));
+    .WillRepeatedly(Return(false));
+
+    EXPECT_CALL(mock, callCheckIfHandHasWonWithAce(_, _, 11))
+    .Times(1)
+    .WillRepeatedly(Return(false));
 
     EXPECT_CALL(mock, callCheckIfHandHasAce(_))
     .Times(1)
@@ -82,11 +104,12 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
     
 
     bool actual = playGame.verifyHandHasWon(&mock, hand);
-    EXPECT_EQ(actual, true);    
+    EXPECT_EQ(actual, false);    
 }
 
 
-TEST(CheckIfHandHasAceShould, ReturnFalseWhenNoAceIsInHand) {
+
+TEST(GameLogic_CheckIfHandHasAceShould, ReturnFalseWhenNoAceIsInHand) {
     PlayGame playGame;
     Player* player = new Player();
     Card cardHearts("hearts", "ten");
@@ -97,7 +120,7 @@ TEST(CheckIfHandHasAceShould, ReturnFalseWhenNoAceIsInHand) {
     EXPECT_EQ(actual, false);
 }
 
-TEST(CheckIfHandHasAceShould, ReturnTrueWhenAceIsInHand) {
+TEST(GameLogic_CheckIfHandHasAceShould, ReturnTrueWhenAceIsInHand) {
     PlayGame playGame;
     Player* player = new Player();
     Card cardHearts("hearts", "ten");
@@ -111,7 +134,7 @@ TEST(CheckIfHandHasAceShould, ReturnTrueWhenAceIsInHand) {
 }
 
 
-TEST(CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithAceInHand) {
+TEST(GameLogic_CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithAceInHand) {
     MockGame mock;
 
     PlayGame playGame;
@@ -128,7 +151,53 @@ TEST(CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithAceInHand) {
     EXPECT_EQ(actual, false);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
+TEST(GameLogic_CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
+    MockGame mock;
+    PlayGame playGame;
+    Card cardHearts("hearts", "five");
+    vector<Card> hand = {cardHearts};
+
+    EXPECT_CALL(mock, callGetCardTrueValue(_))
+    .Times(1)
+    .WillOnce(Return(10));
+
+    bool actual = playGame.checkIfHandHasWon(&mock, hand);
+    EXPECT_EQ(actual, false);    
+}
+
+TEST(GameLogic_CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithMultipleAces) {
+    MockGame mock;
+    PlayGame playGame;
+    Card cardHearts("hearts", "ace");
+    Card cardClubs("clubs", "ace");
+    vector<Card> hand = {cardHearts, cardClubs};
+
+    EXPECT_CALL(mock, callGetCardTrueValue(_))
+    .Times(2);
+
+    bool actual = playGame.checkIfHandHasWon(&mock, hand);
+    EXPECT_EQ(actual, false);    
+}
+
+TEST(GameLogic_CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithMultipleAces) {
+    MockGame mock;
+    PlayGame playGame;
+    Card cardHearts("hearts", "ace");
+    Card cardClubs("clubs", "ace");
+    Card cardSpades("spades", "nine");
+    vector<Card> hand = {cardHearts, cardClubs, cardSpades};
+
+    EXPECT_CALL(mock, callGetCardTrueValue(_))
+    .Times(3)
+    .WillOnce(Return(11))
+    .WillOnce(Return(1))
+    .WillOnce(Return(9));
+
+    bool actual = playGame.checkIfHandHasWon(&mock, hand, 11);
+    EXPECT_EQ(actual, true);    
+}
+
+TEST(GameLogic_CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
     MockGame mock;
 
     PlayGame playGame;
@@ -149,7 +218,7 @@ TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
     EXPECT_EQ(actual, true);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
+TEST(GameLogic_CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     MockGame mock;
 
     PlayGame playGame;
@@ -170,22 +239,8 @@ TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     EXPECT_EQ(actual, true);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
-    MockGame mock;
-    PlayGame playGame;
-    Card cardHearts("hearts", "five");
-    vector<Card> hand = {cardHearts};
 
-    EXPECT_CALL(mock, callGetCardTrueValue(_))
-    .Times(1)
-    .WillOnce(Return(10));
-
-    bool actual = playGame.checkIfHandHasWon(&mock, hand);
-    EXPECT_EQ(actual, false);    
-}
-
-
-TEST(VerifyAnyPlayerHasAchieved21Should, ReturnZeroIfOnePlayerHasWon){
+TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnPopulatedArrayOfSizeOneIfOnePlayerHasWon){
     MockGame mock;
 
     PlayGame playGame;
@@ -199,12 +254,12 @@ TEST(VerifyAnyPlayerHasAchieved21Should, ReturnZeroIfOnePlayerHasWon){
     .WillOnce(Return(true))
     .WillOnce(Return(false));
 
-    vector<int> actual = playGame.verifyAnyPlayerHasAchieved21(&mock);
+    vector<int> actual = playGame.returnListOfPlayersAt21(&mock);
 
-    EXPECT_EQ(actual.back(), 0);    
+    EXPECT_EQ(actual.size(), 1);    
 }
 
-TEST(VerifyAnyPlayerHasAchieved21Should, ReturnZeroIfNoPlayersHaveWon){
+TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnPopulatedArrayOfSizeTwoIfTwoPlayersHaveWon){
     MockGame mock;
 
     PlayGame playGame;
@@ -215,16 +270,15 @@ TEST(VerifyAnyPlayerHasAchieved21Should, ReturnZeroIfNoPlayersHaveWon){
 
     EXPECT_CALL(mock, callVerifyHandHasWon(_, _))
     .Times(2)
-    .WillOnce(Return(false))
-    .WillOnce(Return(false));
+    .WillOnce(Return(true))
+    .WillOnce(Return(true));
 
-    vector<int> actual = playGame.verifyAnyPlayerHasAchieved21(&mock);
+    vector<int> actual = playGame.returnListOfPlayersAt21(&mock);
 
-    EXPECT_EQ(actual.size(),0);    
+    EXPECT_EQ(actual.size(), 2);    
 }
 
-
-TEST(VerifyAnyPlayerHasAchieved21Should, ReturnOneIfSecondOfTwoPlayersHaveWon){
+TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnArrayWithValueOfOneIfSecondPlayerHasWon){
     MockGame mock;
 
     PlayGame playGame;
@@ -238,13 +292,32 @@ TEST(VerifyAnyPlayerHasAchieved21Should, ReturnOneIfSecondOfTwoPlayersHaveWon){
     .WillOnce(Return(false))
     .WillOnce(Return(true));
 
-    
-    vector<int> actual = playGame.verifyAnyPlayerHasAchieved21(&mock);
+    vector<int> actual = playGame.returnListOfPlayersAt21(&mock);
+
     EXPECT_EQ(actual.back(), 1);    
 }
 
+TEST(GameLogic_ReturnListOfPlayersAt21Should, ReturnUnpopulatedArrayIfNoPlayersHaveWon){
+    MockGame mock;
 
-TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenUnder21) {
+    PlayGame playGame;
+    Player* player = new Player();
+    Player* player2 = new Player();
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
+
+    EXPECT_CALL(mock, callVerifyHandHasWon(_, _))
+    .Times(2)
+    .WillOnce(Return(false))
+    .WillOnce(Return(false));
+
+    vector<int> actual = playGame.returnListOfPlayersAt21(&mock);
+
+    EXPECT_EQ(actual.size(),0);    
+}
+
+
+TEST(GameLogic_CheckIfHandHasGoneBustShould, ReturnFalseWhenUnder21) {
     MockGame mock;
     PlayGame playGame;
     Card cardHearts("hearts", "ten");
@@ -263,7 +336,7 @@ TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenUnder21) {
     EXPECT_EQ(actual, false);
 }
 
-TEST(CheckIfHandHasGoneBustShould, ReturnTrueWhenOver21) {
+TEST(GameLogic_CheckIfHandHasGoneBustShould, ReturnTrueWhenOver21) {
     MockGame mock;
     PlayGame playGame;
     Card cardHearts("hearts", "ten");
@@ -282,7 +355,7 @@ TEST(CheckIfHandHasGoneBustShould, ReturnTrueWhenOver21) {
     EXPECT_EQ(actual, true);
 }
 
-TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenExactly21) {
+TEST(GameLogic_CheckIfHandHasGoneBustShould, ReturnFalseWhenExactly21) {
     MockGame mock;
     PlayGame playGame;
     Card cardHearts("hearts", "ten");
@@ -302,7 +375,7 @@ TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenExactly21) {
 }
 
 
-TEST(CheckIfAllPlayersHaveGoneBustShould, ReturnFalseWhenOnePlayerIsntBust) {
+TEST(GameLogic_CheckIfAllPlayersHaveGoneBustShould, ReturnFalseWhenOnePlayerIsntBust) {
     MockGame mock;
     PlayGame playGame;   
     Player* player = new Player();
@@ -321,7 +394,7 @@ TEST(CheckIfAllPlayersHaveGoneBustShould, ReturnFalseWhenOnePlayerIsntBust) {
     EXPECT_EQ(actual, false);
 }
 
-TEST(CheckIfAllPlayersHaveGoneBustShould, ReturnFalseOnFirstTryWhenAllPlayersAreBust) {
+TEST(GameLogic_CheckIfAllPlayersHaveGoneBustShould, ReturnFalseOnFirstTryWhenAllPlayersAreBust) {
     MockGame mock;
     PlayGame playGame;   
     Player* player = new Player();
@@ -339,7 +412,7 @@ TEST(CheckIfAllPlayersHaveGoneBustShould, ReturnFalseOnFirstTryWhenAllPlayersAre
     EXPECT_EQ(actual, false);
 }
 
-TEST(CheckIfAllPlayersHaveGoneBustShould, ReturnTrueWhenAllPlayersAreBust) {
+TEST(GameLogic_CheckIfAllPlayersHaveGoneBustShould, ReturnTrueWhenAllPlayersAreBust) {
     MockGame mock;
     PlayGame playGame;   
     Player* player = new Player();
