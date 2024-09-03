@@ -2,12 +2,36 @@
 #include <gmock/gmock.h>
 #include "game/playgame.h"
 #include <vector>
-#include <sstream
+#include <sstream>
 using namespace std;
 
-TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
+
+TEST(GameLogic_Handis21Should, ReturnFalseWhenHandIsnt21WithoutAce) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "five");
+    player->addCardToHand(cardHearts);
+
+    bool actual = playGame.handis21(wrapper, player->getHand());
+    EXPECT_EQ(actual, false);    
+}
+
+TEST(GameLogic_Handis21Should, ReturnFalseWhenHandIsnt21WithAce) {
+    PlayGame playGame;
+    Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "ace");
+    player->addCardToHand(cardHearts);
+
+    bool actual = playGame.handis21(wrapper, player->getHand());
+    EXPECT_EQ(actual, false);    
+}
+
+TEST(GameLogic_Handis21Should, ReturnTrueWhenHandIs21WithoutAce) {
+    PlayGame playGame;
+    Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "five");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "five");
@@ -17,23 +41,14 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     Card cardClubs("clubs", "six");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.verifyHandHasWon(player->getHand());
+    bool actual = playGame.handis21(wrapper, player->getHand());
     EXPECT_EQ(actual, true);    
 }
 
-TEST(VerifyHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
+TEST(GameLogic_Handis21Should, ReturnTrueWhenHandIs21WithMultipleAces) {
     PlayGame playGame;
     Player* player = new Player();
-    Card cardHearts("hearts", "five");
-    player->addCardToHand(cardHearts);
-
-    bool actual = playGame.verifyHandHasWon(player->getHand());
-    EXPECT_EQ(actual, false);    
-}
-
-TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEqualTo21) {
-    PlayGame playGame;
-    Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "two");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
@@ -43,13 +58,14 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEqu
     Card cardClubs("clubs", "seven");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.verifyHandHasWon(player->getHand());
+    bool actual = playGame.handis21(wrapper, player->getHand());
     EXPECT_EQ(actual, true);    
 }
 
-TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
+TEST(GameLogic_Handis21Should, ReturnTrueWhenHandIs21WithOneAce) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ten");
@@ -57,23 +73,23 @@ TEST(VerifyHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
     Card cardClubs("clubs", "ace");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.verifyHandHasWon(player->getHand());
+    bool actual = playGame.handis21(wrapper, player->getHand());
     EXPECT_EQ(actual, true);    
 }
 
 
-TEST(CheckIfHandHasAceShould, ReturnFalseWhenNoAceIsInHand) {
+TEST(GameLogic_HandHasAceShould, ReturnFalseWhenNoAceIsInHand) {
     PlayGame playGame;
     Player* player = new Player();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
 
-    bool actual = playGame.checkIfHandHasAce(player->getHand());
+    bool actual = playGame.handHasAce(player->getHand());
 
     EXPECT_EQ(actual, false);
 }
 
-TEST(CheckIfHandHasAceShould, ReturnTrueWhenAceIsInHand) {
+TEST(GameLogic_HandHasAceShould, ReturnTrueWhenAceIsInHand) {
     PlayGame playGame;
     Player* player = new Player();
     Card cardHearts("hearts", "ten");
@@ -81,27 +97,40 @@ TEST(CheckIfHandHasAceShould, ReturnTrueWhenAceIsInHand) {
     Card cardClubs("clubs", "ace");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasAce(player->getHand());
+    bool actual = playGame.handHasAce(player->getHand());
 
     EXPECT_EQ(actual, true);
 }
 
 
-TEST(CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21) {
+TEST(GameLogic_HandHasWonShould, ReturnFalseWhenHandIsnt21WithAce) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardClubs("clubs", "ace");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasWon(player->getHand(), 1);
+    bool actual = playGame.handHasWon(wrapper, player->getHand(), 1);
     EXPECT_EQ(actual, false);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
+TEST(GameLogic_HandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "five");
+    player->addCardToHand(cardHearts);
+
+    bool actual = playGame.handHasWon(wrapper, player->getHand());
+    EXPECT_EQ(actual, false);    
+}
+
+TEST(GameLogic_HandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
+    PlayGame playGame;
+    Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ten");
@@ -109,13 +138,14 @@ TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithAceAsOne) {
     Card cardClubs("clubs", "ace");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasWon(player->getHand(), 1);
+    bool actual = playGame.handHasWon(wrapper, player->getHand(), 1);
     EXPECT_EQ(actual, true);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEqualTo21) {
+TEST(GameLogic_HandHasWonShould, ReturnTrueWhenHandIs21WithMultipleAces) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "two");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ace");
@@ -125,13 +155,14 @@ TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithOneAceAsElevenButStillEq
     Card cardClubs("clubs", "seven");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasWon(player->getHand(), 11);
+    bool actual = playGame.handHasWon(wrapper, player->getHand(), 11);
     EXPECT_EQ(actual, true);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
+TEST(GameLogic_HandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "five");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "five");
@@ -141,24 +172,15 @@ TEST(CheckIfHandHasWonShould, ReturnTrueWhenHandIs21WithoutAce) {
     Card cardClubs("clubs", "six");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasWon(player->getHand());
+    bool actual = playGame.handHasWon(wrapper, player->getHand());
     EXPECT_EQ(actual, true);    
 }
 
-TEST(CheckIfHandHasWonShould, ReturnFalseWhenHandIsnt21WithoutAce) {
+
+TEST(GameLogic_ReturnListOfPlayersAt21, ReturnOneIfOnePlayerHasWon){
     PlayGame playGame;
     Player* player = new Player();
-    Card cardHearts("hearts", "five");
-    player->addCardToHand(cardHearts);
-
-    bool actual = playGame.checkIfHandHasWon(player->getHand());
-    EXPECT_EQ(actual, false);    
-}
-
-
-TEST(VerifyAnyPlayerHasAchieved21Should, ReturnOneIfOnePlayerHasWon){
-    PlayGame playGame;
-    Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ten");
@@ -168,13 +190,14 @@ TEST(VerifyAnyPlayerHasAchieved21Should, ReturnOneIfOnePlayerHasWon){
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
     
-    vector<int> actual = playGame.verifyAnyPlayerHasAchieved21();
+    vector<int> actual = playGame.returnListOfPlayersAt21(wrapper);
     EXPECT_EQ(actual.size(), 1);    
 }
 
-TEST(VerifyAnyPlayerHasAchieved21Should, ReturnZeroIfNoPlayersHaveWon){
+TEST(GameLogic_ReturnListOfPlayersAt21, ReturnZeroIfNoPlayersHaveWon){
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "two");
@@ -184,14 +207,14 @@ TEST(VerifyAnyPlayerHasAchieved21Should, ReturnZeroIfNoPlayersHaveWon){
     vector<Player*> players = {player};
     playGame.setPlayerList(players);
     
-    vector<int> actual = playGame.verifyAnyPlayerHasAchieved21();
+    vector<int> actual = playGame.returnListOfPlayersAt21(wrapper);
     EXPECT_EQ(actual.size(),0);    
 }
 
-
-TEST(VerifyAnyPlayerHasAchieved21Should, ReturnTwoIfSecondOfTwoPlayersHaveWon){
+TEST(GameLogic_ReturnListOfPlayersAt21, ReturnTwoIfSecondOfTwoPlayersHaveWon){
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "two");
@@ -213,25 +236,27 @@ TEST(VerifyAnyPlayerHasAchieved21Should, ReturnTwoIfSecondOfTwoPlayersHaveWon){
     vector<Player*> players = {player, player2};
     playGame.setPlayerList(players);
     
-    vector<int> actual = playGame.verifyAnyPlayerHasAchieved21();
+    vector<int> actual = playGame.returnListOfPlayersAt21(wrapper);
     EXPECT_EQ(actual.back(), 1);    
 }
 
 
-TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenUnder21) {
+TEST(GameLogic_HandHasGoneBustShould, ReturnFalseWhenUnder21) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card card("hearts", "one");
     player->addCardToHand(card);
 
-    bool actual = playGame.checkIfHandHasGoneBust(player->getHand());
+    bool actual = playGame.handHasGoneBust(wrapper, player->getHand());
 
     EXPECT_EQ(actual, false);
 }
 
-TEST(CheckIfHandHasGoneBustShould, ReturnTrueWhenOver21) {
+TEST(GameLogic_HandHasGoneBustShould, ReturnTrueWhenOver21) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ten");
@@ -239,14 +264,15 @@ TEST(CheckIfHandHasGoneBustShould, ReturnTrueWhenOver21) {
     Card cardClubs("clubs", "ten");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasGoneBust(player->getHand());
+    bool actual = playGame.handHasGoneBust(wrapper, player->getHand());
 
     EXPECT_EQ(actual, true);
 }
 
-TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenExactly21) {
+TEST(GameLogic_HandHasGoneBustShould, ReturnFalseWhenExactly21) {
     PlayGame playGame;
     Player* player = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
     Card cardHearts("hearts", "ten");
     player->addCardToHand(cardHearts);
     Card cardSpades("spades", "ten");
@@ -254,7 +280,71 @@ TEST(CheckIfHandHasGoneBustShould, ReturnFalseWhenExactly21) {
     Card cardClubs("clubs", "ace");
     player->addCardToHand(cardClubs);
 
-    bool actual = playGame.checkIfHandHasGoneBust(player->getHand());
+    bool actual = playGame.handHasGoneBust(wrapper, player->getHand());
 
     EXPECT_EQ(actual, false);
 }
+
+
+TEST(GameLogic_AllPlayersHaveGoneBustShould, ReturnTrueWhenAllPlayersHaveGoneBust) {
+    PlayGame playGame;
+    Player* player = new Player();
+    Player* player2 = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "ten");
+    player->addCardToHand(cardHearts);
+    player2->addCardToHand(cardHearts);
+    Card cardSpades("spades", "ten");
+    player->addCardToHand(cardSpades);
+    player2->addCardToHand(cardSpades);
+    Card cardClubs("clubs", "ten");
+    player->addCardToHand(cardClubs);
+    player2->addCardToHand(cardClubs);
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
+
+    bool actual = playGame.allPlayersHaveGoneBust(wrapper);
+
+    EXPECT_EQ(actual, true);
+}
+
+TEST(GameLogic_AllPlayersHaveGoneBustShould, ReturnFalseWhenOnePlayerHasntGoneBust) {
+    PlayGame playGame;
+    Player* player = new Player();
+    Player* player2 = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "ten");
+    player->addCardToHand(cardHearts);
+    player2->addCardToHand(cardHearts);
+    Card cardSpades("spades", "ten");
+    player->addCardToHand(cardSpades);
+    player2->addCardToHand(cardSpades);
+    Card cardClubs("clubs", "ten");
+    player->addCardToHand(cardClubs);
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
+
+    bool actual = playGame.allPlayersHaveGoneBust(wrapper);
+
+    EXPECT_EQ(actual, false);
+}
+
+TEST(GameLogic_AllPlayersHaveGoneBustShould, ReturnFalseWhenNoPlayersHaveGoneBust) {
+    PlayGame playGame;
+    Player* player = new Player();
+    Player* player2 = new Player();
+    PlayGameWrapper* wrapper = new PlayGame();
+    Card cardHearts("hearts", "ten");
+    player->addCardToHand(cardHearts);
+    player2->addCardToHand(cardHearts);
+    Card cardSpades("spades", "ten");
+    player->addCardToHand(cardSpades);
+    player2->addCardToHand(cardSpades);
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
+
+    bool actual = playGame.allPlayersHaveGoneBust(wrapper);
+
+    EXPECT_EQ(actual, false);
+}
+

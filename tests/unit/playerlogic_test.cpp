@@ -45,7 +45,7 @@ TEST(PlayerLogic_PlayPlayersRoundShould, PrintSetTextWhenBeingDealtCard) {
     .WillOnce([&hand](PlayGameWrapper* wrapper, int playerNumber) {
         cout << "EXAMPLE TEXT IS HERE";
     }); 
-    EXPECT_CALL(mock, callCheckIfHandHasGoneBust(_, _))
+    EXPECT_CALL(mock, callHandHasGoneBust(_, _))
     .Times(1)
     .WillOnce(Return(false));
 
@@ -119,7 +119,7 @@ TEST(PlayerLogic_PlayPlayersRoundShould, PrintPlayerHasGoneBustWhenTheyHave) {
     EXPECT_CALL(mock, getUserIntResponse())
     .WillOnce(Return(1));
 
-    EXPECT_CALL(mock, callCheckIfHandHasGoneBust(_, _))
+    EXPECT_CALL(mock, callHandHasGoneBust(_, _))
     .Times(1)
     .WillOnce(Return(true));
 

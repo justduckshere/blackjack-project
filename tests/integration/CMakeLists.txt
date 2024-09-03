@@ -2,9 +2,9 @@ include(AddGoogleTest)
 add_executable(
     int_tests
     dealerlogic_test.cpp
+    gamelogic_test.cpp
     # winnerhandler_test.cpp
     # handmanagement_test.cpp
-    # gamelogic_test.cpp
     # playerlogic_test.cpp
     main_test.cpp
 )

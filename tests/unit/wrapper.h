@@ -13,7 +13,7 @@ public:
     MOCK_METHOD(int, callGetTotalHand, (PlayGameWrapper* wrapper, vector<Card> hand), (override));
     MOCK_METHOD(int, callGetTotalHand, (PlayGameWrapper* wrapper, vector<Card> hand, int aceValue), (override));
     MOCK_METHOD(bool, callDetermineIfDealerShouldDraw, (PlayGameWrapper* wrapper, bool hasAce), (override));
-    MOCK_METHOD(bool, callCheckIfHandHasAce, (vector<Card> hand), (override));
+    MOCK_METHOD(bool, callHandHasAce, (vector<Card> hand), (override));
     MOCK_METHOD(vector<Card>, callGetDeck, (Deck inputDeck), (override));
 
     MOCK_METHOD(int, callGetCardTrueValue, (Card card), (override));
@@ -25,19 +25,19 @@ public:
 
     MOCK_METHOD(bool, callGetPlayerHasGoneBust, (Player* player), (override));
     MOCK_METHOD(void, callDisplayHand, (Player* player), (override));
-    MOCK_METHOD(bool, callCheckIfHandHasGoneBust, (PlayGameWrapper* wrapper, vector<Card> hand), (override));
+    MOCK_METHOD(bool, callHandHasGoneBust, (PlayGameWrapper* wrapper, vector<Card> hand), (override));
 
     MOCK_METHOD(int, callGetCurrentTotal, (Player* player), (override));
     MOCK_METHOD((std::pair<int, vector<int>>), callGetListOfPlayersWithHighestScores, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(void, callDisplayWin, (bool dealerHasWon, vector<int> playersWhoHaveWon, int score), (override));
-    MOCK_METHOD(bool, callVerifyHandHasWon, (PlayGameWrapper* wrapper, vector<Card> hand), (override));
-    MOCK_METHOD(bool, callCheckIfHandHasWon, (PlayGameWrapper *wrapper, vector<Card> hand), (override));
-    MOCK_METHOD(bool, callCheckIfHandHasWonWithAce, (PlayGameWrapper *wrapper, vector<Card> hand, int aceValue), (override));
+    MOCK_METHOD(bool, callHandis21, (PlayGameWrapper* wrapper, vector<Card> hand), (override));
+    MOCK_METHOD(bool, callHandHasWon, (PlayGameWrapper *wrapper, vector<Card> hand), (override));
+    MOCK_METHOD(bool, callHandHasWonWithAce, (PlayGameWrapper *wrapper, vector<Card> hand, int aceValue), (override));
 
     MOCK_METHOD(vector<int>, callReturnListOfPlayersAt21, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(void, callDetermineWinnerFromNobody21, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(void, callPlayDealersRound, (PlayGameWrapper* wrapper), (override));
-    MOCK_METHOD(bool, callCheckIfAllPlayersHaveGoneBust, (PlayGameWrapper* wrapper), (override));
+    MOCK_METHOD(bool, callAllPlayersHaveGoneBust, (PlayGameWrapper* wrapper), (override));
     MOCK_METHOD(void, callInit, (Deck deck), (override));
     MOCK_METHOD(void, callShuffle, (Deck deck), (override));
     MOCK_METHOD(void, callCreatePlayerList, (PlayGameWrapper *wrapper), (override));
