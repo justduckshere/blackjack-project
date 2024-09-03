@@ -5,24 +5,24 @@ void PlayGame::playDealersRound(PlayGameWrapper* wrapper) {
     bool hasAce = wrapper->callCheckIfHandHasAce(wrapper->callGetHand(dealer));
     bool shouldDraw = wrapper->callDetermineIfDealerShouldDraw(wrapper, hasAce);
     if (shouldDraw == true) {
-        wrapper->callAddCardToHand(dealer, currentDeck.getDeck().back());
+        wrapper->callAddCardToHand(dealer, wrapper->callGetDeck(currentDeck).back());
         wrapper->callRemovePlayedCard(currentDeck);
     }
 }
 
 bool PlayGame::determineIfDealerShouldDraw(PlayGameWrapper* wrapper, bool hasAce){
-    bool drawCard = false;
+    int dealersHandTotal = 0;
     if (hasAce == true) {
-        if (wrapper->callGetTotalHand(wrapper, dealer->getHand(), 11) < 17) {
-            drawCard = true;
-        }
+        // we only need to call the total for the instance of the ace = 11 as we need to treat the ace
+        // as 11 to verify if it is over 17 
+        dealersHandTotal = wrapper->callGetTotalHand(wrapper, wrapper->callGetHand(dealer), 11); 
     }else {
-        int dealersHandTotal = wrapper->callGetTotalHand(wrapper, dealer->getHand());
-        if (dealersHandTotal < 17) {
-            drawCard = true;
-        }
+        dealersHandTotal = wrapper->callGetTotalHand(wrapper, wrapper->callGetHand(dealer));
     }
-    return drawCard;
+    if (dealersHandTotal < 17) {
+        return true;
+    }
+    return false;
 }
 
 Player* PlayGame::getDealer(){

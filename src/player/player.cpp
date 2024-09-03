@@ -2,6 +2,7 @@
 
 Player::Player(){
     this->goneBust = false;
+    this->currentTotal=0;
 }
 
 void Player::addCardToHand(Card card) {
@@ -19,7 +20,6 @@ void Player::setPlayerHasGoneBust() {
 bool Player::getPlayerHasGoneBust() {
     return this->goneBust;
 }
-
 
 void Player::setCurrentTotal(int total){
     this->currentTotal = total;
