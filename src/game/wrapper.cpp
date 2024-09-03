@@ -4,10 +4,6 @@ int PlayGame::callGetCardTrueValue(Card card){
     return card.getCardTrueValue();
 }
 
-vector<Card> PlayGame::callGetDeck(Deck inputDeck) {
-    return inputDeck.getDeck();
-}
-
 vector<Card> PlayGame::callGetHand(Player* player){
     return player->getHand();
 }
@@ -74,8 +70,8 @@ bool PlayGame::callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Car
     return checkIfHandHasWon(wrapper, hand, aceValue);
 }
 
-vector<int> PlayGame::callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) {
-    return returnListOfPlayersAt21(wrapper);
+vector<int> PlayGame::callVerifyAnyPlayerHasAchieved21(PlayGameWrapper *wrapper) {
+    return verifyAnyPlayerHasAchieved21(wrapper);
 }
 
 void PlayGame::callDetermineWinnerFromNobody21(PlayGameWrapper *wrapper) {
