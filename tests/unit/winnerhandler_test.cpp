@@ -278,7 +278,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoVal
 TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHandWithAceDealerIsSetToTrue) {
     MockGame mock;
     PlayGame playGame;
-    Player* player = new Player();
+    Player* dealer = new Player();
 
     EXPECT_CALL(mock, callCheckIfHandHasAce(_))
     .Times(1)
@@ -289,15 +289,15 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHan
     .WillOnce(Return(23))
     .WillOnce(Return(10));
 
-    playGame.setHighestValidHandValueForPlayer(&mock, player, true);
+    playGame.setHighestValidHandValueForPlayer(&mock, dealer, true);
 
-    EXPECT_EQ(player->getCurrentTotal(), 23);
+    EXPECT_EQ(dealer->getCurrentTotal(), 23);
 }
 
 TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHandWithoutAceDealerIsSetToTrue) {
     MockGame mock;
     PlayGame playGame;
-    Player* player = new Player();
+    Player* dealer = new Player();
 
     EXPECT_CALL(mock, callCheckIfHandHasAce(_))
     .Times(1)
@@ -307,9 +307,9 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHan
     .Times(1)
     .WillOnce(Return(23));
 
-    playGame.setHighestValidHandValueForPlayer(&mock, player, true);
+    playGame.setHighestValidHandValueForPlayer(&mock, dealer, true);
 
-    EXPECT_EQ(player->getCurrentTotal(), 23);
+    EXPECT_EQ(dealer->getCurrentTotal(), 23);
 }
 
 

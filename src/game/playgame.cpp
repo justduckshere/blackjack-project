@@ -16,8 +16,8 @@ void PlayGame::playGame(PlayGameWrapper *wrapper){
         wrapper->callDisplayWin(dealerHasWon, playersWhoHaveWon, 21);
     }else {
         while (winner == false) {
-            winner = wrapper->callRegularGamePlay(wrapper); 
             cout << "Next round has started" << endl << endl;
+            winner = wrapper->callRegularGamePlay(wrapper); 
         }
     }
 }
@@ -41,7 +41,7 @@ bool PlayGame::regularGamePlay(PlayGameWrapper *wrapper){
     wrapper->callDisplayHand(dealer);
     wrapper->callSetHighestValidHandValueForPlayer(wrapper, dealer, true);
 
-    if (wrapper->callCheckIfHandHasGoneBust(wrapper, wrapper->callGetHand(getDealer()))) {
+    if (wrapper->callGetCurrentTotal(dealer) > 21) {
         cout << "Dealer has gone bust! Everyone else has won!!" << endl <<endl;
         return true;
     }else if (wrapper->callCheckIfAllPlayersHaveGoneBust(wrapper) == true) {
