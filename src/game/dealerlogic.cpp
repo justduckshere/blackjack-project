@@ -2,7 +2,7 @@
 
 
 void PlayGame::playDealersRound(PlayGameWrapper* wrapper) {
-    bool hasAce = wrapper->callCheckIfHandHasAce(wrapper->callGetHand(dealer));
+    bool hasAce = wrapper->callHandHasAce(wrapper->callGetHand(dealer));
     bool shouldDraw = wrapper->callDetermineIfDealerShouldDraw(wrapper, hasAce);
     if (shouldDraw == true) {
         wrapper->callAddCardToHand(dealer, wrapper->callGetDeck(currentDeck).back());

@@ -15,7 +15,7 @@ void PlayGame::playPlayersRound(PlayGameWrapper* wrapper) {
                 wrapper->callDealToPlayer(wrapper, i);
                 cout << "\tPlayer " << i+1 << " has ";
                 wrapper->callDisplayHand(getPlayerList()[i]);
-                if (wrapper->callCheckIfHandHasGoneBust(wrapper, getPlayerList()[i]->getHand()) == true) {
+                if (wrapper->callHandHasGoneBust(wrapper, wrapper->callGetHand(getPlayerList()[i])) == true) {
                     getPlayerList()[i]->setPlayerHasGoneBust();
                     cout << "Sorry - you have gone bust!" << endl << endl;
                 }

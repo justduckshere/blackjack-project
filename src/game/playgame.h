@@ -28,16 +28,16 @@ public:
     virtual std::pair<int, vector<int>> callGetListOfPlayersWithHighestScores(PlayGameWrapper* wrapper) =0;
     virtual void callDisplayWin(bool dealerHasWon, vector<int> playersWhoHaveWon, int score) = 0;
     
-    virtual bool callCheckIfHandHasGoneBust(PlayGameWrapper* wrapper, vector<Card> hand) =  0;
+    virtual bool callHandHasGoneBust(PlayGameWrapper* wrapper, vector<Card> hand) =  0;
     virtual bool callDetermineIfDealerShouldDraw(PlayGameWrapper* wrapper, bool hasAce) = 0;
-    virtual bool callCheckIfHandHasAce(vector<Card> hand) = 0;
-    virtual bool callVerifyHandHasWon(PlayGameWrapper* wrapper, vector<Card> hand) = 0;
-    virtual bool callCheckIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand) =0 ;
-    virtual bool callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) =0;
+    virtual bool callHandHasAce(vector<Card> hand) = 0;
+    virtual bool callVerifyHandis21(PlayGameWrapper* wrapper, vector<Card> hand) = 0;
+    virtual bool callHandis21(PlayGameWrapper *wrapper, vector<Card> hand) =0 ;
+    virtual bool callHandis21WithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) =0;
     virtual vector<int> callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) = 0;
     virtual void callDetermineWinnerFromNobody21(PlayGameWrapper *wrapper) = 0;
     virtual void callPlayDealersRound(PlayGameWrapper* wrapper) = 0;
-    virtual bool callCheckIfAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) = 0;
+    virtual bool callAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) = 0;
     
     virtual void callInit(Deck deck) = 0;
     virtual void callShuffle(Deck deck) =0;
@@ -79,13 +79,13 @@ public:
     int getTotalHand(PlayGameWrapper *playGameWrapper, vector<Card> hand, int aceValue);
 
     // Game logic functions 
-    bool checkIfHandHasGoneBust(PlayGameWrapper *wrapper, vector<Card> hand);
-    bool verifyHandHasWon(PlayGameWrapper *playGameWrapper, vector<Card> hand);
-    bool checkIfHandHasAce(vector<Card> hand);
-    bool checkIfHandHasWon(PlayGameWrapper *playGameWrapper,vector<Card> hand);
-    bool checkIfHandHasWon(PlayGameWrapper *playGameWrapper,vector<Card> hand, int aceValue);
+    bool handHasGoneBust(PlayGameWrapper *wrapper, vector<Card> hand);
+    bool verifyHandis21(PlayGameWrapper *playGameWrapper, vector<Card> hand);
+    bool handHasAce(vector<Card> hand);
+    bool handis21(PlayGameWrapper *playGameWrapper,vector<Card> hand);
+    bool handis21(PlayGameWrapper *playGameWrapper,vector<Card> hand, int aceValue);
     vector<int> returnListOfPlayersAt21(PlayGameWrapper *wrapper);
-    bool checkIfAllPlayersHaveGoneBust(PlayGameWrapper *wrapper);
+    bool allPlayersHaveGoneBust(PlayGameWrapper *wrapper);
 
 
     // functions for handling winning
@@ -114,16 +114,16 @@ public:
     std::pair<int, vector<int>> callGetListOfPlayersWithHighestScores(PlayGameWrapper* wrapper) override;
     void callDisplayWin(bool dealerHasWon, vector<int> playersWhoHaveWon, int score) override;
     
-    bool callCheckIfHandHasGoneBust(PlayGameWrapper* wrapper, vector<Card> hand) override;
+    bool callHandHasGoneBust(PlayGameWrapper* wrapper, vector<Card> hand) override;
     bool callDetermineIfDealerShouldDraw(PlayGameWrapper* wrapper, bool hasAce) override;
-    bool callCheckIfHandHasAce(vector<Card> hand) override;
-    bool callVerifyHandHasWon(PlayGameWrapper* wrapper, vector<Card> hand) override;
-    bool callCheckIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand) override;
-    bool callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) override;
+    bool callHandHasAce(vector<Card> hand) override;
+    bool callVerifyHandis21(PlayGameWrapper* wrapper, vector<Card> hand) override;
+    bool callHandis21(PlayGameWrapper *wrapper, vector<Card> hand) override;
+    bool callHandis21WithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) override;
     vector<int> callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) override;
     void callDetermineWinnerFromNobody21(PlayGameWrapper *wrapper) override;
     void callPlayDealersRound(PlayGameWrapper* wrapper) override;
-    bool callCheckIfAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) override;
+    bool callAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) override;
     
     void callInit(Deck deck) override;
     void callShuffle(Deck deck) override;

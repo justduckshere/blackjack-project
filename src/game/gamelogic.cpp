@@ -1,19 +1,19 @@
 #include "playgame.h"
 
-bool PlayGame::verifyHandHasWon(PlayGameWrapper* wrapper, vector<Card> hand){
-    if (wrapper->callCheckIfHandHasAce(hand) == true) {
-        if (wrapper->callCheckIfHandHasWonWithAce(wrapper, hand, 1) == true || wrapper->callCheckIfHandHasWonWithAce(wrapper, hand, 11) == true){
+bool PlayGame::verifyHandis21(PlayGameWrapper* wrapper, vector<Card> hand){
+    if (wrapper->callHandHasAce(hand) == true) {
+        if (wrapper->callHandis21WithAce(wrapper, hand, 1) == true || wrapper->callHandis21WithAce(wrapper, hand, 11) == true){
             return true;
         }
     } else {
-        if (wrapper->callCheckIfHandHasWon(wrapper, hand) == true){
+        if (wrapper->callHandis21(wrapper, hand) == true){
             return true;
         }
     }
     return false;
 }
 
-bool PlayGame::checkIfHandHasAce(vector<Card> hand){
+bool PlayGame::handHasAce(vector<Card> hand){
     for (int i =0; i < hand.size(); i++) {
         if (hand[i].getValue() == "ace") {
             return true;
@@ -22,7 +22,7 @@ bool PlayGame::checkIfHandHasAce(vector<Card> hand){
     return false;
 }
 
-bool PlayGame::checkIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue){
+bool PlayGame::handis21(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue){
     int count = 0; 
     bool oneAceFound = false;
     for (int i =0; i < hand.size(); i++){
@@ -42,7 +42,7 @@ bool PlayGame::checkIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand, in
     return false;
 }
 
-bool PlayGame::checkIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand){
+bool PlayGame::handis21(PlayGameWrapper *wrapper, vector<Card> hand){
     int count = 0; 
     for (int i =0; i < hand.size(); i++){
         count += wrapper->callGetCardTrueValue(hand[i]);
@@ -53,7 +53,7 @@ bool PlayGame::checkIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand){
     return false;
 }
 
-bool PlayGame::checkIfHandHasGoneBust(PlayGameWrapper *wrapper, vector<Card> hand){
+bool PlayGame::handHasGoneBust(PlayGameWrapper *wrapper, vector<Card> hand){
     int count = 0;
     for (int i =0; i < hand.size(); i++){
         count += wrapper->callGetCardTrueValue(hand[i]);
@@ -65,10 +65,10 @@ bool PlayGame::checkIfHandHasGoneBust(PlayGameWrapper *wrapper, vector<Card> han
     return false;
 }
 
-bool PlayGame::checkIfAllPlayersHaveGoneBust(PlayGameWrapper *wrapper) {
+bool PlayGame::allPlayersHaveGoneBust(PlayGameWrapper *wrapper) {
     bool allPlayersAreBust = true;        
     for(int i =0; i < getPlayerList().size(); i++) {
-        if (wrapper->callCheckIfHandHasGoneBust(wrapper, wrapper->callGetHand(getPlayerList()[i])) == false){
+        if (wrapper->callHandHasGoneBust(wrapper, wrapper->callGetHand(getPlayerList()[i])) == false){
             return false;
         }   
     }
@@ -79,7 +79,7 @@ bool PlayGame::checkIfAllPlayersHaveGoneBust(PlayGameWrapper *wrapper) {
 vector<int> PlayGame::returnListOfPlayersAt21(PlayGameWrapper *wrapper){
     vector<int> playersReached21;
     for(int i =0; i < getPlayerList().size(); i++) {
-        if (wrapper->callVerifyHandHasWon(wrapper, getPlayerList()[i]->getHand()) == true){
+        if (wrapper->callVerifyHandis21(wrapper, getPlayerList()[i]->getHand()) == true){
             playersReached21.push_back(i);
         }
     }

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "game/playgame.h"
-#include "wrapper.h"
+#include "../wrapper.h"
 #include <vector>
 #include <sstream>
 
@@ -224,7 +224,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrent
     PlayGame playGame;
     Player* player = new Player();
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(false));
 
@@ -242,7 +242,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValue
     PlayGame playGame;
     Player* player = new Player();
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -261,7 +261,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoVal
     PlayGame playGame;
     Player* player = new Player();
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -280,7 +280,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHan
     PlayGame playGame;
     Player* dealer = new Player();
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -299,7 +299,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHan
     PlayGame playGame;
     Player* dealer = new Player();
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(false));
 
