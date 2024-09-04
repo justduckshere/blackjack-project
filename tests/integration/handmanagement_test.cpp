@@ -2,12 +2,9 @@
 #include <gmock/gmock.h>
 #include "game/playgame.h"
 #include <vector>
-#include <sstream>
 
 using namespace std;
 using ::testing::Return;
-
-
 
 TEST(HandManagement_DealToEveryoneShould, IncreaseBothPlayersHandSizesByOne) {
     PlayGameWrapper* playGameWrapper = new PlayGame();
