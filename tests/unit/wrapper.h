@@ -42,7 +42,7 @@ public:
     MOCK_METHOD(void, callShuffle, (Deck deck), (override));
     MOCK_METHOD(void, callCreatePlayerList, (PlayGameWrapper *wrapper), (override));
     MOCK_METHOD(void, callDealToEveryone, (PlayGameWrapper *wrapper), (override));
-    MOCK_METHOD(void, callSetHighestValidHandValueForPlayer, (PlayGameWrapper *wrapper, Player* dealerPlayer), (override));
+    MOCK_METHOD(void, callSetHighestValidHandValueForPlayer, (PlayGameWrapper *wrapper, Player* dealerPlayer, bool isDealer), (override));
     MOCK_METHOD(void, callInitialiseGame, (PlayGameWrapper *wrapper), (override));
     MOCK_METHOD(Player*, callGetDealer, (), (override));
     MOCK_METHOD(bool, callRegularGamePlay, (PlayGameWrapper *wrapper), (override));

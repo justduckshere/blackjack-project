@@ -8,6 +8,3 @@ chmod +x run.sh
 To run the rests(from root):
 chmod +x test.sh
 ./test.sh
-
-
-I have temporarily placed the blackjack-project executable in the root directory so that it is easier to find, but normally it is redirected to the /build folder.
