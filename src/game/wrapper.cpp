@@ -106,9 +106,8 @@ void PlayGame::callDealToEveryone(PlayGameWrapper *wrapper){
     dealToEveryone(wrapper);
 }
 
-
-void PlayGame::callSetHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* dealerPlayer) {
-    setHighestValidHandValueForPlayer(wrapper, dealerPlayer);
+void PlayGame::callSetHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* dealerPlayer, bool isDealer) {
+    setHighestValidHandValueForPlayer(wrapper, dealerPlayer, isDealer);
 }
 
 void PlayGame::callInitialiseGame(PlayGameWrapper *wrapper) {

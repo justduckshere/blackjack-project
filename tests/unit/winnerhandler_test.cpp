@@ -174,8 +174,6 @@ TEST(WinnerHandler_DetermineWinnerFromNobody21Should, PrintCorrectTextGivenPlaye
     EXPECT_EQ("The dealer value is 1 and the playersWhoHaveWon size is 2", text);
 }
 
-
-
 TEST(WinnerHandler_DisplayWin, PrintPlayerOneHasWonAndDealerHasWonToOutputOnDealerAndPlayerOneTying) {
     stringstream buffer;
     streambuf* prevcoutbuf = cout.rdbuf(buffer.rdbuf());
@@ -234,7 +232,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetThePlayersCurrent
     .Times(1)
     .WillOnce(Return(20));
 
-    playGame.setHighestValidHandValueForPlayer(&mock, player);
+    playGame.setHighestValidHandValueForPlayer(&mock, player, false);
 
     EXPECT_EQ(player->getCurrentTotal(), 20);
 }
@@ -253,7 +251,7 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnLessOfTwoValue
     .WillOnce(Return(22))
     .WillOnce(Return(1));
 
-    playGame.setHighestValidHandValueForPlayer(&mock, player);
+    playGame.setHighestValidHandValueForPlayer(&mock, player, false);
 
     EXPECT_EQ(player->getCurrentTotal(), 1);
 }
@@ -272,10 +270,49 @@ TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, ReturnHigherOfTwoVal
     .WillOnce(Return(11))
     .WillOnce(Return(1));
 
-    playGame.setHighestValidHandValueForPlayer(&mock, player);
+    playGame.setHighestValidHandValueForPlayer(&mock, player, false);
 
     EXPECT_EQ(player->getCurrentTotal(), 11);
 }
+
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHandWithAceDealerIsSetToTrue) {
+    MockGame mock;
+    PlayGame playGame;
+    Player* player = new Player();
+
+    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    .Times(1)
+    .WillOnce(Return(true));
+
+    EXPECT_CALL(mock, callGetTotalHand(_, _, _))
+    .Times(2)
+    .WillOnce(Return(23))
+    .WillOnce(Return(10));
+
+    playGame.setHighestValidHandValueForPlayer(&mock, player, true);
+
+    EXPECT_EQ(player->getCurrentTotal(), 23);
+}
+
+TEST(WinnerHandler_SetHighestValidHandValueForPlayerShould, SetScoreOver21ForHandWithoutAceDealerIsSetToTrue) {
+    MockGame mock;
+    PlayGame playGame;
+    Player* player = new Player();
+
+    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    .Times(1)
+    .WillOnce(Return(false));
+
+    EXPECT_CALL(mock, callGetTotalHand(_, _))
+    .Times(1)
+    .WillOnce(Return(23));
+
+    playGame.setHighestValidHandValueForPlayer(&mock, player, true);
+
+    EXPECT_EQ(player->getCurrentTotal(), 23);
+}
+
+
 
 
 TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnVectorOfSizeOneWhenOnlyOnePlayerHasTheHighestScore) {
@@ -333,4 +370,23 @@ TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnTwoPlayersWhen
     pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores(&mock);
 
     EXPECT_EQ(actual.second.size(), 2);
+}
+
+TEST(WinnerHandler_GetListOfPlayersWithHighestScoresShould, ReturnOnePlayersValueWhenOnlyOnePlayerHasTheHighestScoreUnder21) {
+    MockGame mock;
+    PlayGame playGame;
+    Player* player = new Player();
+    Player* player2 = new Player();
+
+    vector<Player*> players = {player, player2};
+    playGame.setPlayerList(players);
+
+    EXPECT_CALL(mock, callGetCurrentTotal(_))
+    .Times(2)
+    .WillOnce(Return(21))
+    .WillOnce(Return(22));
+
+    pair<int, vector<int>> actual = playGame.getListOfPlayersWithHighestScores(&mock);
+
+    EXPECT_EQ(actual.second.back(), 0);
 }

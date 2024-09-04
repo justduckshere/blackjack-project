@@ -2,7 +2,7 @@
 
 
 void PlayGame::determineWinnerFromNobody21(PlayGameWrapper *wrapper) {
-    wrapper->callSetHighestValidHandValueForPlayer(wrapper, dealer);
+    wrapper->callSetHighestValidHandValueForPlayer(wrapper, dealer, true);
     pair<int, vector<int>> highest = wrapper->callGetListOfPlayersWithHighestScores(wrapper);
     int dealerTotal = wrapper->callGetCurrentTotal(dealer);
 
@@ -21,7 +21,7 @@ pair<int, vector<int>> PlayGame::getListOfPlayersWithHighestScores(PlayGameWrapp
 
     for (int i =0; i < getPlayerList().size(); i++) {
         int playersTotal = wrapper->callGetCurrentTotal(getPlayerList()[i]);
-        if (playersTotal > highestScore) {
+        if (playersTotal > highestScore && playersTotal <=21) {
             highestScore = playersTotal;
             highestScoresPlayerId = {};
             highestScoresPlayerId.push_back(i);
@@ -53,12 +53,12 @@ void PlayGame::displayWin(bool dealerHasWon, vector<int> playersWhoHaveWon, int 
     }
 }
 
-void PlayGame::setHighestValidHandValueForPlayer(PlayGameWrapper *wrapper,Player* player) {
+void PlayGame::setHighestValidHandValueForPlayer(PlayGameWrapper *wrapper,Player* player, bool isDealer) {
     bool hasAce = wrapper->callCheckIfHandHasAce(player->getHand());
     if (hasAce == true) {
         int elevenCount = wrapper->callGetTotalHand(wrapper, player->getHand(), 11);
         int oneCount = wrapper->callGetTotalHand(wrapper, player->getHand(), 1);
-        if (elevenCount < 21) {
+        if (elevenCount < 21 || isDealer == true) {
             player->setCurrentTotal(elevenCount);
         } else {
             player->setCurrentTotal(oneCount);

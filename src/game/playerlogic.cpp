@@ -23,6 +23,7 @@ void PlayGame::playPlayersRound(PlayGameWrapper* wrapper) {
                 cout << "\tPlayer " << i+1 << " has ";
                 wrapper->callDisplayHand(getPlayerList()[i]);
             }
+            wrapper->callSetHighestValidHandValueForPlayer(wrapper, getPlayerList()[i], false);
         }
     }
 }

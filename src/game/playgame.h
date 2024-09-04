@@ -43,7 +43,7 @@ public:
     virtual void callShuffle(Deck deck) =0;
     virtual void callCreatePlayerList(PlayGameWrapper *wrapper) =0;
     virtual void callDealToEveryone(PlayGameWrapper *wrapper) =0;
-    virtual void callSetHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* dealerPlayer) =0;
+    virtual void callSetHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* dealerPlayer, bool isDealer) =0;
     virtual void callInitialiseGame(PlayGameWrapper *wrapper) =0;
     virtual Player* callGetDealer() = 0;
     virtual bool callRegularGamePlay(PlayGameWrapper *wrapper) = 0;
@@ -91,7 +91,7 @@ public:
     // functions for handling winning
     void displayWin(bool dealerHasWon, vector<int> playersWhoHaveWon, int score);
     void determineWinnerFromNobody21(PlayGameWrapper *wrapper);
-    void setHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* player);
+    void setHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* player, bool isDealer);
     pair<int, vector<int>> getListOfPlayersWithHighestScores(PlayGameWrapper *wrapper);
 
     
@@ -129,7 +129,7 @@ public:
     void callShuffle(Deck deck) override;
     void callCreatePlayerList(PlayGameWrapper *wrapper) override;
     void callDealToEveryone(PlayGameWrapper *wrapper) override;
-    void callSetHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* dealerPlayer) override;
+    void callSetHighestValidHandValueForPlayer(PlayGameWrapper *wrapper, Player* dealerPlayer, bool isDealer) override;
     void callInitialiseGame(PlayGameWrapper *wrapper) override;
     Player* callGetDealer() override;
     bool callRegularGamePlay(PlayGameWrapper *wrapper) override;

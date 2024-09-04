@@ -154,14 +154,6 @@ TEST(PlayGame_RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
-    .Times(1)
-    .WillOnce(Return(vectorPlayersAchieved21));
-
-    EXPECT_CALL(mock, callGetCurrentTotal(_))
-    .Times(1)
-    .WillOnce(Return(14));
-
     EXPECT_CALL(mock, callCheckIfAllPlayersHaveGoneBust(_))
     .Times(1)
     .WillOnce(Return(true));
@@ -183,14 +175,6 @@ TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDea
     EXPECT_CALL(mock, callCheckIfHandHasGoneBust(_, _))
     .Times(1)
     .WillOnce(Return(false));
-
-    EXPECT_CALL(mock, callReturnListOfPlayersAt21(_))
-    .Times(1)
-    .WillOnce(Return(vectorPlayersAchieved21));
-
-    EXPECT_CALL(mock, callGetCurrentTotal(_))
-    .Times(1)
-    .WillOnce(Return(14));
 
     EXPECT_CALL(mock, callCheckIfAllPlayersHaveGoneBust(_))
     .Times(1)
