@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "game/playgame.h"
-#include "wrapper.h"
+#include "../wrapper.h"
 
 using namespace std;
 using ::testing::Return;
@@ -140,7 +140,7 @@ TEST(PlayGame_RegularGamePlayShould, ReturnTrueIfAllPlayersBustButTheDealer) {
     .Times(1)
     .WillOnce(Return(10));
 
-    EXPECT_CALL(mock, callCheckIfAllPlayersHaveGoneBust(_))
+    EXPECT_CALL(mock, callAllPlayersHaveGoneBust(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -162,7 +162,7 @@ TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfAllPlayersBustButTheDea
     .Times(1)
     .WillOnce(Return(10));
 
-    EXPECT_CALL(mock, callCheckIfAllPlayersHaveGoneBust(_))
+    EXPECT_CALL(mock, callAllPlayersHaveGoneBust(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -189,7 +189,7 @@ TEST(PlayGame_RegularGamePlayShould, ReturnFalseIfNoConditionsAreMet) {
     .WillOnce(Return(10))
     .WillOnce(Return(11));
 
-    EXPECT_CALL(mock, callCheckIfAllPlayersHaveGoneBust(_))
+    EXPECT_CALL(mock, callAllPlayersHaveGoneBust(_))
     .Times(1)
     .WillOnce(Return(false));
 
@@ -216,7 +216,7 @@ TEST(PlayGame_RegularGamePlayShould, PrintSetTestStringIfNoConditionsAreMet) {
     .WillOnce(Return(10))
     .WillOnce(Return(11));
 
-    EXPECT_CALL(mock, callCheckIfAllPlayersHaveGoneBust(_))
+    EXPECT_CALL(mock, callAllPlayersHaveGoneBust(_))
     .Times(1)
     .WillOnce(Return(false));
 
@@ -266,7 +266,7 @@ TEST(PlayGame_PlayGameShould, PrintTheCorrectTextGivenDealerHasWonIsTrue) {
     .Times(1)
     .WillOnce(Return(noPlayersHaveWon));
     
-    EXPECT_CALL(mock, callVerifyHandHasWon(_, _))
+    EXPECT_CALL(mock, callVerifyHandis21(_, _))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -298,7 +298,7 @@ TEST(PlayGame_PlayGameShould, PrintTheCorrectTextGivenAPlayerHasWon) {
     .Times(1)
     .WillOnce(Return(playersHaveWon));
     
-    EXPECT_CALL(mock, callVerifyHandHasWon(_, _))
+    EXPECT_CALL(mock, callVerifyHandis21(_, _))
     .Times(1)
     .WillOnce(Return(false));
 
@@ -329,7 +329,7 @@ TEST(PlayGame_PlayGameShould, PrintTheCorrectTextGivenNobodyHasWonTheInitialRoun
     .Times(1)
     .WillOnce(Return(noPlayersHaveWon));
     
-    EXPECT_CALL(mock, callVerifyHandHasWon(_, _))
+    EXPECT_CALL(mock, callVerifyHandis21(_, _))
     .Times(1)
     .WillOnce(Return(false));
 

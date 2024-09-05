@@ -10,7 +10,7 @@ void PlayGame::playGame(PlayGameWrapper *wrapper){
     bool winner = false;
     vector<int> playersWhoHaveWon = wrapper->callReturnListOfPlayersAt21(wrapper);
     wrapper->callSetHighestValidHandValueForPlayer(wrapper, wrapper->callGetDealer(), true); 
-    bool dealerHasWon = wrapper->callVerifyHandHasWon(wrapper, wrapper->callGetHand(wrapper->callGetDealer()));
+    bool dealerHasWon = wrapper->callVerifyHandis21(wrapper, wrapper->callGetHand(wrapper->callGetDealer()));
     if (dealerHasWon == true || playersWhoHaveWon.size() != 0) {
         cout << "Dealers second card is: "<< wrapper->callGetHand(wrapper->callGetDealer()).front().getValue() << " of "<< wrapper->callGetHand(wrapper->callGetDealer()).front().getSuit() << endl << endl;
         wrapper->callDisplayWin(dealerHasWon, playersWhoHaveWon, 21);
@@ -44,11 +44,11 @@ bool PlayGame::regularGamePlay(PlayGameWrapper *wrapper){
     if (wrapper->callGetCurrentTotal(dealer) > 21) {
         cout << "Dealer has gone bust! Everyone else has won!!" << endl <<endl;
         return true;
-    }else if (wrapper->callCheckIfAllPlayersHaveGoneBust(wrapper) == true) {
+    }else if (wrapper->callAllPlayersHaveGoneBust(wrapper) == true) {
         cout << "All players but the dealer have gone bust. Game over." << endl<<endl;
         return true;
     } else if (wrapper->callReturnListOfPlayersAt21(wrapper).size() != 0) {
-        bool dealerHasWon = wrapper->callVerifyHandHasWon(wrapper, wrapper->callGetHand(getDealer()));
+        bool dealerHasWon = wrapper->callVerifyHandis21(wrapper, wrapper->callGetHand(getDealer()));
         vector<int> playersWhoHaveWon = wrapper->callReturnListOfPlayersAt21(wrapper);
         wrapper->callDisplayWin(dealerHasWon, playersWhoHaveWon, 21);
         return  true;

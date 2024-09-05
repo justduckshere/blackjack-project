@@ -54,7 +54,7 @@ void PlayGame::displayWin(bool dealerHasWon, vector<int> playersWhoHaveWon, int 
 }
 
 void PlayGame::setHighestValidHandValueForPlayer(PlayGameWrapper *wrapper,Player* player, bool isDealer) {
-    bool hasAce = wrapper->callCheckIfHandHasAce(player->getHand());
+    bool hasAce = wrapper->callHandHasAce(player->getHand());
     if (hasAce == true) {
         int elevenCount = wrapper->callGetTotalHand(wrapper, player->getHand(), 11);
         int oneCount = wrapper->callGetTotalHand(wrapper, player->getHand(), 1);

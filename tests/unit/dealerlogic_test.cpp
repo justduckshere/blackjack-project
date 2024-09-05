@@ -3,7 +3,7 @@
 #include "game/playgame.h"
 #include "hand/deck.h"
 #include <sstream>
-#include "wrapper.h"
+#include "../wrapper.h"
 
 using namespace std;
 using ::testing::Return;
@@ -20,7 +20,7 @@ TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17W
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -44,7 +44,7 @@ TEST(DealerLogic_PlayDealersRoundShould, NotIncreaseHandSizeForHandLargerThan17W
     .Times(1)
     .WillOnce(Return(false));
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(false));
 
@@ -68,7 +68,7 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17WithAc
     .Times(1)
     .WillOnce(Return(true));
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(true));
 
@@ -100,7 +100,7 @@ TEST(DealerLogic_PlayDealersRoundShould, IncreaseHandSizeForHandLessThan17Withou
     .Times(1)
     .WillOnce(Return(true));
 
-    EXPECT_CALL(mock, callCheckIfHandHasAce(_))
+    EXPECT_CALL(mock, callHandHasAce(_))
     .Times(1)
     .WillOnce(Return(false));
 

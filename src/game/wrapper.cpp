@@ -36,8 +36,8 @@ bool PlayGame::callDetermineIfDealerShouldDraw(PlayGameWrapper* wrapper, bool ha
     return determineIfDealerShouldDraw(wrapper, hasAce);
 }
 
-bool PlayGame::callCheckIfHandHasAce(vector<Card> hand) {
-    return checkIfHandHasAce(hand);
+bool PlayGame::callHandHasAce(vector<Card> hand) {
+    return handHasAce(hand);
 }
 
 bool PlayGame::callGetPlayerHasGoneBust(Player* player){
@@ -47,8 +47,8 @@ bool PlayGame::callGetPlayerHasGoneBust(Player* player){
 void PlayGame::callDisplayHand(Player* player){
     player->displayHand();
 }
-bool PlayGame::callCheckIfHandHasGoneBust(PlayGameWrapper* wrapper, vector<Card> hand) {
-    return checkIfHandHasGoneBust(wrapper, hand);
+bool PlayGame::callHandHasGoneBust(PlayGameWrapper* wrapper, vector<Card> hand) {
+    return handHasGoneBust(wrapper, hand);
 }
 
 int PlayGame::callGetCurrentTotal(Player* player) {
@@ -63,15 +63,15 @@ void PlayGame::callDisplayWin(bool dealerHasWon, vector<int> playersWhoHaveWon, 
     return displayWin(dealerHasWon, playersWhoHaveWon, score);
 }
 
-bool PlayGame::callVerifyHandHasWon(PlayGameWrapper* wrapper, vector<Card> hand) {
-    return verifyHandHasWon(wrapper, hand);
+bool PlayGame::callVerifyHandis21(PlayGameWrapper* wrapper, vector<Card> hand) {
+    return verifyHandis21(wrapper, hand);
 }
 
-bool PlayGame::callCheckIfHandHasWon(PlayGameWrapper *wrapper, vector<Card> hand){
-    return checkIfHandHasWon(wrapper, hand);
+bool PlayGame::callHandis21(PlayGameWrapper *wrapper, vector<Card> hand){
+    return handis21(wrapper, hand);
 }
-bool PlayGame::callCheckIfHandHasWonWithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) {
-    return checkIfHandHasWon(wrapper, hand, aceValue);
+bool PlayGame::callHandis21WithAce(PlayGameWrapper *wrapper, vector<Card> hand, int aceValue) {
+    return handis21(wrapper, hand, aceValue);
 }
 
 vector<int> PlayGame::callReturnListOfPlayersAt21(PlayGameWrapper *wrapper) {
@@ -86,8 +86,8 @@ void PlayGame::callPlayDealersRound(PlayGameWrapper* wrapper) {
     playDealersRound(wrapper);
 }
 
-bool PlayGame::callCheckIfAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) {
-    return checkIfAllPlayersHaveGoneBust(wrapper);
+bool PlayGame::callAllPlayersHaveGoneBust(PlayGameWrapper* wrapper) {
+    return allPlayersHaveGoneBust(wrapper);
 }
 
 void PlayGame::callInit(Deck deck) {
